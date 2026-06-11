@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>My Games - Game Memory AI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+
+        body {
+            font-family: 'Geist', sans-serif;
+            background-color: #0A0A0F;
+            color: #e4e1e9;
+            overflow-x: hidden;
+        }
+
+        .glass-surface {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-surface:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .game-card:hover .hover-reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .game-card .hover-reveal {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glow-point {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #7C3AED;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4a4455;
+            border-radius: 10px;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#732ee4",
+                        "primary": "#d2bbff",
+                        "outline": "#958da1",
+                        "surface-bright": "#39383e",
+                        "background": "#131318",
+                        "primary-fixed-dim": "#d2bbff",
+                        "tertiary": "#4edea3",
+                        "on-tertiary": "#003824",
+                        "on-tertiary-fixed": "#002113",
+                        "surface": "#131318",
+                        "on-secondary-fixed": "#001a42",
+                        "surface-container": "#1f1f25",
+                        "on-primary-fixed": "#25005a",
+                        "on-surface-variant": "#ccc3d8",
+                        "surface-tint": "#d2bbff",
+                        "tertiary-container": "#007650",
+                        "inverse-surface": "#e4e1e9",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#35343a",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "surface-variant": "#35343a",
+                        "on-tertiary-container": "#76ffc2",
+                        "inverse-on-surface": "#303036",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#131318",
+                        "on-primary-container": "#ede0ff",
+                        "on-background": "#e4e1e9",
+                        "on-surface": "#e4e1e9",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary": "#3f008e",
+                        "primary-fixed": "#eaddff",
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-container-high": "#2a292f",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "primary-container": "#7c3aed",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-secondary-container": "#e6ecff",
+                        "on-secondary": "#002e6a",
+                        "surface-container-low": "#1b1b20",
+                        "secondary-container": "#0566d9",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#d8e2ff",
+                        "secondary": "#adc6ff",
+                        "outline-variant": "#4a4455",
+                        "on-tertiary-fixed-variant": "#005236"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "display": ["Geist"],
+                        "body-md": ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-surface-container-lowest">
+    <!-- Side Navigation -->
+    <aside
+        class="h-full w-64 fixed left-0 top-0 bg-surface/10 dark:bg-surface/10 backdrop-blur-xl border-r border-white/10 shadow-2xl flex flex-col py-8 px-4 z-50">
+        <div class="flex items-center gap-3 px-2 mb-10">
+            <img alt="Game Memory AI Logo" class="w-10 h-10 rounded-lg"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDccGR-B0MK8-zbonZy3OkAAbT70BJK5IMg2WPQRH5rVlg_P6ubRZRBsKfNPTFfgYHH9g1lpqiaWJsFzJZ4l8GeETIv7a4kzvs2pdKNrcI8Z1uQzk4yJElkuC9LbDT_b25qYsPlw2RPspuxu2HWb6JVjU-cIxk_LVR3536uCArli3bfYW-Nh-CfI1F6t7L8IdPM-TAs6HEbCixXXltncosKuO7uTy8ZtzIRdXJBfrnO22jBac71QplCjzme8opRPEdoW2eJB3KPDsA" />
+            <div class="flex flex-col">
+                <span class="text-headline-md font-headline-md font-bold text-primary">Game Memory AI</span>
+                <span class="text-label-sm font-label-sm text-on-surface-variant">Pro Gamer Elite</span>
+            </div>
+        </div>
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200"
+                href="dashboard.html">
+                <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                <span class="text-label-md font-label-md">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-primary font-bold border-r-2 border-primary bg-white/5 transition-all duration-200"
+                href="my_games.html">
+                <span class="material-symbols-outlined" data-icon="videogame_asset">videogame_asset</span>
+                <span class="text-label-md font-label-md">My Games</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200"
+                href="memories.html">
+                <span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+                <span class="text-label-md font-label-md">Memories</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200"
+                href="timeline.html">
+                <span class="material-symbols-outlined" data-icon="timeline">timeline</span>
+                <span class="text-label-md font-label-md">Journey Timeline</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200"
+                href="continue_journey.html">
+                <span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
+                <span class="text-label-md font-label-md">Continue Journey</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200"
+                href="upload_memory.html">
+                <span class="material-symbols-outlined" data-icon="cloud_upload">cloud_upload</span>
+                <span class="text-label-md font-label-md">Upload Memory</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200"
+                href="achievements.html">
+                <span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+                <span class="text-label-md font-label-md">Achievements</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 mt-auto"
+                href="settings.html">
+                <span class="material-symbols-outlined" data-icon="settings">settings</span>
+                <span class="text-label-md font-label-md">Settings</span>
+            </a>
+        </nav>
+    </aside>
+    <!-- Top Navigation -->
+    <header
+        class="fixed top-0 right-0 w-[calc(100%-256px)] h-16 z-40 bg-background/80 dark:bg-background/80 backdrop-blur-md border-b border-white/5 flex justify-between items-center px-8">
+        <div class="relative w-96">
+            <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+            <input
+                class="w-full bg-surface-container-low border border-white/10 rounded-full py-1.5 pl-10 pr-4 text-label-md focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                placeholder="Search your library..." type="text" />
+        </div>
+        <div class="flex items-center gap-6">
+            <button class="relative text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full"></span>
+            </button>
+            <div class="flex items-center gap-3 cursor-pointer group">
+                <div class="text-right">
+                    <p class="text-label-md font-bold group-hover:text-primary transition-colors">EliteGamer_99</p>
+                    <p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Level 42 Architect</p>
+                </div>
+                <div class="w-10 h-10 rounded-full overflow-hidden border border-primary/30">
+                    <img alt="User profile photo" class="w-full h-full object-cover"
+                        data-alt="A professional close-up portrait of a tech-savvy gamer with neon-rimmed glasses, set against a dark, minimalist studio background with subtle purple and blue ambient lighting. The aesthetic is clean, pro-sumer, and futuristic, mirroring a high-end AI gaming dashboard."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqLIT6xajiAr0l-Oqzr7qOVQz-79SpB_tMbhQGzMBTSK6eL0qMtdzX-OR0krFkhuI4nggyVeQ1vU9yYyibnfZrpWRnBFMuza7KWTNXxeQCYdFv56W6b6at7LTDi_h59ETe7FYlI1JsS1RvC2BMn5tUp5v4zUhcre-YZIMYXBKCenfytPBVAsGskJwrJ2iQrHKwc-QY-V8dLbJ2uzzzggGMN0qrRfkYntbHfqpd9aVaczSIc4YrloCGAqNt7yvq-e4l4v9-isUoZYQ" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="ml-64 pt-24 px-8 pb-12 min-h-screen relative">
+        <div class="max-w-[1200px] mx-auto">
+            <!-- Page Header & Filters -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                <div>
+                    <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">My Games</h1>
+                    <p class="text-body-md text-on-surface-variant max-w-lg">Access your synchronized game memories,
+                        progress, and AI-driven insights across all your connected platforms.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex bg-surface-container-low p-1 rounded-lg border border-white/5">
+                        <button
+                            class="px-4 py-1.5 rounded-md text-label-md font-bold bg-primary text-on-primary shadow-lg">Recent</button>
+                        <button
+                            class="px-4 py-1.5 rounded-md text-label-md text-on-surface-variant hover:text-primary transition-colors">Alphabetical</button>
+                        <button
+                            class="px-4 py-1.5 rounded-md text-label-md text-on-surface-variant hover:text-primary transition-colors">Progress</button>
+                    </div>
+                    <button
+                        class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-low border border-white/5 text-on-surface-variant hover:text-primary transition-all">
+                        <span class="material-symbols-outlined">filter_list</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Game Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Game Card 1 -->
+                <div
+                    class="game-card relative group rounded-2xl overflow-hidden glass-surface transition-all duration-300 hover:-translate-y-2">
+                    <div class="aspect-[16/10] relative">
+                        <img class="w-full h-full object-cover"
+                            data-alt="Cinematic high-angle landscape shot of a futuristic cyberpunk city at night with rainy streets, neon signs in violet and blue, and massive holographic advertisements. The image has a polished, high-fidelity gaming aesthetic with deep contrasts and atmospheric fog."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZDzJiTVqelo9KcjN5T4sHFcS1BVqjWTdOnr2qbDX7Y4_Uz6liH4x-mx5NNrxwgkYPAsz5yq8xBgyMgCHat2iWE-a1X9Zg5G4mxtS0d8NaPP3b-J-GX3FeoGVMm6z2XZo8u7f83Zc4pWSm3hi64KJJVLo7Ju_bem-oy-zPf6aw-_9oYPWHZpwKzYLrYv4TCDUQTPfc81rkR8XTh-mG6wAR0E_3_TsT1hHWzSva5LzRJZdctva0TwmtmOPpAzjBOM7tYQxqQqs5l2k" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent">
+                        </div>
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="bg-primary/20 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest backdrop-blur-md border border-primary/30">Action
+                                RPG</span>
+                        </div>
+                    </div>
+                    <!-- Hover Overlay -->
+                    <div
+                        class="hover-reveal absolute inset-0 glass-surface flex flex-col items-center justify-center p-6 text-center z-20">
+                        <div class="absolute inset-0 opacity-40 grayscale blur-sm">
+                            <img class="w-full h-full object-cover"
+                                data-alt="Cinematic high-angle landscape shot of a futuristic cyberpunk city at night with rainy streets, neon signs in violet and blue, and massive holographic advertisements."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqEyrUPFsxQGFq0zHWE66aWcBLCx6Gp0W9xhVjiXaY3uHBhb-v7_V-CbIIFPYt_jQ4yu_2iex3w5hPUUOvg7Dh7PSRy-oGyl3sAejAu070aADPGe6kBe3LAN9uhL8aIDo6d3mkRRXRLhSbZ_ftzNrjeU8We44DjJZrff5H5p3mglyrs488gyD-1Ik5UDyyCq1L0W8te_PzvyeoMOOYE53kRnm0NVLMaY0Zos7AxSZ7GpIU4jbuA08bz2qRXMPfbsLXEk1KLqblads" />
+                        </div>
+                        <div class="relative z-30">
+                            <h3 class="text-headline-md font-headline-md mb-4">Cyberpunk 2077</h3>
+                            <button
+                                class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-xl">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                                Continue Journey
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-body-lg font-bold group-hover:text-primary transition-colors">Cyberpunk 2077
+                            </h3>
+                            <div class="glow-point mt-2"></div>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                    Last Played
+                                </span>
+                                <span class="text-on-surface">12h ago</span>
+                            </div>
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                                    Memories
+                                </span>
+                                <span class="text-on-surface">24 Captures</span>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div
+                                    class="flex justify-between text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+                                    <span>Story Progress</span>
+                                    <span>65%</span>
+                                </div>
+                                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full bg-primary rounded-full w-[65%] shadow-[0_0_8px_rgba(210,187,255,0.4)]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Game Card 2 -->
+                <div
+                    class="game-card relative group rounded-2xl overflow-hidden glass-surface transition-all duration-300 hover:-translate-y-2">
+                    <div class="aspect-[16/10] relative">
+                        <img class="w-full h-full object-cover"
+                            data-alt="Epic fantasy landscape with snow-capped mountains and a mystical nordic temple carved into a cliff. The sky is filled with glowing auroras in green and violet, creating a serene and powerful atmospheric scene inspired by high-end action adventure titles."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeluPlYcBwwRz_oBeBmN_K_mXkdX8AObDNeTdioTPAeQKvd347nY3-Xd0USgUztrBZS2deP1C-Wkt-RLMtRw_wqrWXNQeBR-8qr7TBXjKLk8SSIAwNTiP17MOOdnC3xrnrFIy2RhgZkbnrJqVf4572Aie0crzMn1tJhrhtV68o32rfLPGua_L1CCBNfy9OA35KlA5J-x45nP6v_e2NqOUD0CwRwUrvegKLM0MmoDx71HymqYC-h8T65H5hKmI3fD60tjobuvLo6m4" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent">
+                        </div>
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="bg-tertiary/20 text-tertiary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest backdrop-blur-md border border-tertiary/30">Adventure</span>
+                        </div>
+                    </div>
+                    <div
+                        class="hover-reveal absolute inset-0 glass-surface flex flex-col items-center justify-center p-6 text-center z-20">
+                        <div class="absolute inset-0 opacity-40 grayscale blur-sm">
+                            <img class="w-full h-full object-cover"
+                                data-alt="Epic fantasy landscape with snow-capped mountains and a mystical nordic temple carved into a cliff."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiiV4RhqgozcsA8Y4WYjV5FpxnGSNPJmzpfJskFJ-cvW-TxALhHGQWK63AQbHojtFo1YUpVRjvSl19dDQG1REp4_xnvQPmejvYgrv34QQJ8ZglPa3JsltdULdEL_uZULg6vUkJc1lkWtpRemTQuWdE7_d4FQ4sGfXml9jNzrBmhWf0cAm8JVwHn6ehmOvWniSoK1UCXYPR9u9H75VgLa9ZMYfs_u-bGjEuV2MbpvE2fhuhVvzx4A57pUCzjaZxa17oE66mR2_Kg7c" />
+                        </div>
+                        <div class="relative z-30">
+                            <h3 class="text-headline-md font-headline-md mb-4">God of War Ragnarok</h3>
+                            <button
+                                class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-xl">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                                Continue Journey
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-body-lg font-bold group-hover:text-primary transition-colors">God of War
+                                Ragnarok</h3>
+                            <div class="glow-point mt-2"></div>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                    Last Played
+                                </span>
+                                <span class="text-on-surface">2d ago</span>
+                            </div>
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                                    Memories
+                                </span>
+                                <span class="text-on-surface">56 Captures</span>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div
+                                    class="flex justify-between text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+                                    <span>Story Progress</span>
+                                    <span>88%</span>
+                                </div>
+                                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full bg-primary rounded-full w-[88%] shadow-[0_0_8px_rgba(210,187,255,0.4)]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Game Card 3 -->
+                <div
+                    class="game-card relative group rounded-2xl overflow-hidden glass-surface transition-all duration-300 hover:-translate-y-2">
+                    <div class="aspect-[16/10] relative">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A dark, atmospheric racing scene featuring a high-performance sports car on a wet coastal road at twilight. Red taillight streaks and soft blue ambient light from the horizon create a sense of speed and high-end automotive precision, styled as a premium racing simulator."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVcnlruTqjEwWEJKz2AwUxpOT4mqj30iDOKQmfCvTGJr_Lx1VY4leMxnoJwnEEj5FRKvV3OWVfuGcULEKjMkUqthxmp1il7CFut696QdEdp1t3xedk_lcFbwAMK4T81smyDBW6LCs9UNH6H3mKqVGJrUtVFpIvBEW9HvW8s4X5F2ihrcAo-jzT4GDFeB0lp2HSZTz7cx0i2OkwhVuHWK1Y1DTvYi8jr8UDdA-M42dFQWepa5GJu5M6Qty6ceB61qG4y_7GFrAyKS8" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent">
+                        </div>
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="bg-secondary/20 text-secondary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest backdrop-blur-md border border-secondary/30">Simulation</span>
+                        </div>
+                    </div>
+                    <div
+                        class="hover-reveal absolute inset-0 glass-surface flex flex-col items-center justify-center p-6 text-center z-20">
+                        <div class="absolute inset-0 opacity-40 grayscale blur-sm">
+                            <img class="w-full h-full object-cover"
+                                data-alt="A dark, atmospheric racing scene featuring a high-performance sports car on a wet coastal road at twilight."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuPZHxa8ncJ7I0QYuwcSvpFLj1BoVHO2LLHAPPTjm9V-TGlYBEg4CsZhWApAAZOAPqbj7PlVmKeqPm_CP-qNYvBDB4_DpfvqF3RmUSteXd_G1OF_v4CNcka9IitZQKOI7dqg3yDgNuI-ksFdMp8tciRFi4E5tOlvYLrIvVIc_CaMt5fJLXMHgYLXc9l2ictE_EeUGvEvkVFWGt2Cs_RmK5dcd4yYpATqSDJjZiyz-z60dliUytRmeFHgW9yK96MSJ8cQQ0aFNRJW8" />
+                        </div>
+                        <div class="relative z-30">
+                            <h3 class="text-headline-md font-headline-md mb-4">Forza Horizon 5</h3>
+                            <button
+                                class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-xl">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                                Continue Journey
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-body-lg font-bold group-hover:text-primary transition-colors">Forza Horizon
+                                5</h3>
+                            <div class="glow-point mt-2"></div>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                    Last Played
+                                </span>
+                                <span class="text-on-surface">3h ago</span>
+                            </div>
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                                    Memories
+                                </span>
+                                <span class="text-on-surface">112 Captures</span>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div
+                                    class="flex justify-between text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+                                    <span>Story Progress</span>
+                                    <span>42%</span>
+                                </div>
+                                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full bg-primary rounded-full w-[42%] shadow-[0_0_8px_rgba(210,187,255,0.4)]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Game Card 4 -->
+                <div
+                    class="game-card relative group rounded-2xl overflow-hidden glass-surface transition-all duration-300 hover:-translate-y-2">
+                    <div class="aspect-[16/10] relative">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A dark and mysterious sci-fi corridor inside an abandoned space station. Distant orange sparks fly from broken wiring, while cool blue light spills from a portal at the end of the hall. The visual style is tense, immersive, and highly detailed, reflecting a premium horror-survival atmosphere."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV1k37G1X9tghDSAGNBGjYycSQ7L3aBeWV4NHMZ0L1hcG0MVgM7UopKMdIPsYyvWkXwS6ALL54UdzVpzavgit_bTzcIAf1s2k_z5XSkuhaWPcNoqdWkzJBJac2lmAFtY44OOT8I0kCC5C5T9oTdmigFlW1cIiPTkJrjiGTED8quZB7u-JZ6YiSoEGe97WMMgErwT9Jpi25kgs7hLinGeVUi3z_3t3IYgv8lg7q67-APxf4APW8mTyNNrAfr0Bh8NOk5OxDU3U7QfI" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent">
+                        </div>
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="bg-error/20 text-error text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest backdrop-blur-md border border-error/30">Horror</span>
+                        </div>
+                    </div>
+                    <div
+                        class="hover-reveal absolute inset-0 glass-surface flex flex-col items-center justify-center p-6 text-center z-20">
+                        <div class="absolute inset-0 opacity-40 grayscale blur-sm">
+                            <img class="w-full h-full object-cover"
+                                data-alt="A dark and mysterious sci-fi corridor inside an abandoned space station."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJdvwrgZ1p_B5UkQbVRVI976PFwfB087mr_vCrLkDcudZ1lzwLM1knt33iCAW7vs2eXz3Oau-CNTRWGhZgqOpjlK_W6O0UcrhbE9ZrjTbaVY7sUV-Cy0fKjO6McCiv0_d0C6RdE61ypH8vMD6iUhYC-YYjOEfz20m3K3EVKW257DGmtOqY2nvq0PZAb94aSOOacti5RJzMcV7GmlVJpCOduXHGNZNZ1Vr3G0_5b_7XoS63Fy24DsEFvsfbYZrNaxoGqMcU0T6MCRQ" />
+                        </div>
+                        <div class="relative z-30">
+                            <h3 class="text-headline-md font-headline-md mb-4">Dead Space Remake</h3>
+                            <button
+                                class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-xl">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                                Continue Journey
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-body-lg font-bold group-hover:text-primary transition-colors">Dead Space
+                                Remake</h3>
+                            <div class="glow-point mt-2"></div>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                    Last Played
+                                </span>
+                                <span class="text-on-surface">5d ago</span>
+                            </div>
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                                    Memories
+                                </span>
+                                <span class="text-on-surface">12 Captures</span>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div
+                                    class="flex justify-between text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+                                    <span>Story Progress</span>
+                                    <span>21%</span>
+                                </div>
+                                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full bg-primary rounded-full w-[21%] shadow-[0_0_8px_rgba(210,187,255,0.4)]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Game Card 5 -->
+                <div
+                    class="game-card relative group rounded-2xl overflow-hidden glass-surface transition-all duration-300 hover:-translate-y-2">
+                    <div class="aspect-[16/10] relative">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A lush, vibrant alien forest with glowing bioluminescent plants and massive floating islands in a distant purple sky. The lighting is soft and magical, capturing a sense of discovery and high-fantasy wonder typical of modern exploration RPGs."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0ZUrAn0Lu9nwHiFOK1Q08SxGjI9dc24ura7JArLDUvSybJ8rs7HnZHCXbJSgWOggw6gJHoNg_sEj7T_mHJF8dVd93MsR_CNkBZNTUsz9h34Tw73ScHv-r_hNa6NNVVLYme1VDMLme4ikMdyXxQ_VDOaPgw41d687TobG8rz3HQSUf3f7xptCo2P0Lo_mp6ARhgAVXN8T_TuPgXjruqIN-5f-C_BrTNHULd-__SQLz9d_HORJXMxJj4MsrLXC8K1m88rKG9laO_OA" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent">
+                        </div>
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="bg-primary/20 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest backdrop-blur-md border border-primary/30">Open
+                                World</span>
+                        </div>
+                    </div>
+                    <div
+                        class="hover-reveal absolute inset-0 glass-surface flex flex-col items-center justify-center p-6 text-center z-20">
+                        <div class="absolute inset-0 opacity-40 grayscale blur-sm">
+                            <img class="w-full h-full object-cover"
+                                data-alt="A lush, vibrant alien forest with glowing bioluminescent plants."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTytNs9BqlCc7ixzgmov5KtfHDVYD77QJTdYk0VgmC4col3CwZp4hXW9AbNSxK8j91jJiCOKJmWAGrRNaSx46CVNpZ93zNrdV63CsD9XVl3-6dbDAIpWptEvep5CUCN5iYbB72RcKUjdZsnAUfuR5wmM7e1uoE2ljPbeC7MtyPt_xnZ8WrwRyOXn8YglMnduZmDw9PP65Ri57g9NktD5fJ7_srMWnhlukHnrK5SEJSWgjpXmiisMkpuodGvv7OHIYfYoQXS_jrnXM" />
+                        </div>
+                        <div class="relative z-30">
+                            <h3 class="text-headline-md font-headline-md mb-4">Elden Ring</h3>
+                            <button
+                                class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-xl">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                                Continue Journey
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-body-lg font-bold group-hover:text-primary transition-colors">Elden Ring
+                            </h3>
+                            <div class="glow-point mt-2"></div>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                    Last Played
+                                </span>
+                                <span class="text-on-surface">1h ago</span>
+                            </div>
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                                    Memories
+                                </span>
+                                <span class="text-on-surface">184 Captures</span>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div
+                                    class="flex justify-between text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+                                    <span>Story Progress</span>
+                                    <span>92%</span>
+                                </div>
+                                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full bg-primary rounded-full w-[92%] shadow-[0_0_8px_rgba(210,187,255,0.4)]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Game Card 6 -->
+                <div
+                    class="game-card relative group rounded-2xl overflow-hidden glass-surface transition-all duration-300 hover:-translate-y-2">
+                    <div class="aspect-[16/10] relative">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A sleek, minimalist digital world constructed of translucent white blocks and vibrant purple data streams. In the distance, a massive AI core glows softly, sending ripples of light through the grid-like environment. The style is sharp, architectural, and purely digital."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6lvRl3gu-5lH9vcoYcs53MzYTg-QM2no0II141OiZu8QRfZVGXtCBDK0aZu0vz2gtD76EyGEKmUCrgdQAaL83G-7k9Ea_WQVzYvVeCXAzpyU9zFIXhRD6-i6VSqWRN8AdblAcMV6pSHU8HlaSlkasEyNLHeh5ET3eZOcuJ27k_7hGPfhEo-krDBnbbBZsz5gJMcbL7SSVyuZjiB8EJjEnv8KnuCFK1nnpLPieo6gmziY2KNp_kJKLxtUHy4vUpekkw7qVXwLCGLI" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent">
+                        </div>
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="bg-tertiary/20 text-tertiary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest backdrop-blur-md border border-tertiary/30">Puzzle</span>
+                        </div>
+                    </div>
+                    <div
+                        class="hover-reveal absolute inset-0 glass-surface flex flex-col items-center justify-center p-6 text-center z-20">
+                        <div class="absolute inset-0 opacity-40 grayscale blur-sm">
+                            <img class="w-full h-full object-cover"
+                                data-alt="A sleek, minimalist digital world constructed of translucent white blocks."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcUTa31potRtQ9fOA0q-6_TI-4uOhqLue5wQQz42GUvk9On0InaKRFoa7mFVO5aG4k6V-hUXk0olOToNeTuORhJJt777WfuyEbJVL_MxrUJF0QhdHNTODcNGKnW4kaTzSqNcCAsKcjPeD-TIglQIV18vFeiTZeQJR4adzEAeLR9yoKTXQgIc9sEYEHZYwRkCfJzaAd45yXQftkUml5T8cA1Y16ZKRyUuZ4oB1wnGdgvQ_1937f6yX6sAViNIGucs0Pb-HL22lO7uc" />
+                        </div>
+                        <div class="relative z-30">
+                            <h3 class="text-headline-md font-headline-md mb-4">Viewfinder</h3>
+                            <button
+                                class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-xl">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                                Continue Journey
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-body-lg font-bold group-hover:text-primary transition-colors">Viewfinder
+                            </h3>
+                            <div class="glow-point mt-2"></div>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                    Last Played
+                                </span>
+                                <span class="text-on-surface">1w ago</span>
+                            </div>
+                            <div class="flex items-center justify-between text-label-md">
+                                <span class="text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                                    Memories
+                                </span>
+                                <span class="text-on-surface">8 Captures</span>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div
+                                    class="flex justify-between text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
+                                    <span>Story Progress</span>
+                                    <span>10%</span>
+                                </div>
+                                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full bg-primary rounded-full w-[10%] shadow-[0_0_8px_rgba(210,187,255,0.4)]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- AI Insight Section (Premium Add-on) -->
+            <section class="mt-16 glass-surface rounded-2xl p-8 overflow-hidden relative group">
+
+                <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-shrink-0">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-primary-container flex items-center justify-center text-on-primary-container shadow-[0_0_20px_rgba(124,58,237,0.4)]">
+                            <span class="material-symbols-outlined text-[32px]">psychology</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <h4 class="text-headline-md font-headline-md text-primary mb-1">AI Recommendation</h4>
+                        <p class="text-body-md text-on-surface-variant">Based on your recent playstyle in <span
+                                class="text-on-surface font-bold">Cyberpunk 2077</span>, you might enjoy diving back
+                            into the tactical stealth missions in <span class="text-on-surface font-bold">God of
+                                War</span>'s Niflheim region.</p>
+                    </div>
+                    <button
+                        class="bg-white/5 border border-white/10 hover:bg-white/10 text-on-surface px-6 py-2.5 rounded-xl font-bold transition-all">
+                        View Analysis
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- Background Decorative Gradient -->
+    <div
+        class="fixed top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] -z-10 rounded-full pointer-events-none translate-x-1/2 -translate-y-1/2">
+    </div>
+    <div
+        class="fixed bottom-0 left-64 w-[300px] h-[300px] bg-tertiary/5 blur-[100px] -z-10 rounded-full pointer-events-none -translate-x-1/2 translate-y-1/2">
+    </div>
+    <script>
+        // Micro-interaction for hover effects on glass cards
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+
+</html>

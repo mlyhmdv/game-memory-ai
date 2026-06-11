@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Upload Memory | Game Memory AI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glow-border:focus-within {
+            border-color: #7c3aed;
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);
+        }
+
+        .drop-zone-active {
+            background: rgba(124, 58, 237, 0.05);
+            border-color: #d2bbff;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .animate-glow {
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#732ee4",
+                        "primary": "#d2bbff",
+                        "outline": "#958da1",
+                        "surface-bright": "#39383e",
+                        "background": "#131318",
+                        "primary-fixed-dim": "#d2bbff",
+                        "tertiary": "#4edea3",
+                        "on-tertiary": "#003824",
+                        "on-tertiary-fixed": "#002113",
+                        "surface": "#131318",
+                        "on-secondary-fixed": "#001a42",
+                        "surface-container": "#1f1f25",
+                        "on-primary-fixed": "#25005a",
+                        "on-surface-variant": "#ccc3d8",
+                        "surface-tint": "#d2bbff",
+                        "tertiary-container": "#007650",
+                        "inverse-surface": "#e4e1e9",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#35343a",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "surface-variant": "#35343a",
+                        "on-tertiary-container": "#76ffc2",
+                        "inverse-on-surface": "#303036",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#131318",
+                        "on-primary-container": "#ede0ff",
+                        "on-background": "#e4e1e9",
+                        "on-surface": "#e4e1e9",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary": "#3f008e",
+                        "primary-fixed": "#eaddff",
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-container-high": "#2a292f",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "primary-container": "#7c3aed",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-secondary-container": "#e6ecff",
+                        "on-secondary": "#002e6a",
+                        "surface-container-low": "#1b1b20",
+                        "secondary-container": "#0566d9",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#d8e2ff",
+                        "secondary": "#adc6ff",
+                        "outline-variant": "#4a4455",
+                        "on-tertiary-fixed-variant": "#005236"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "stack-md": "16px",
+                        "unit": "8px",
+                        "stack-sm": "8px",
+                        "container-max-width": "1200px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "display": ["Geist"],
+                        "body-md": ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-background font-body-md selection:bg-primary/30">
+    <!-- Side Navigation Shell -->
+    <aside
+        class="h-full w-64 fixed left-0 top-0 border-r border-white/10 bg-surface/10 backdrop-blur-xl shadow-2xl flex flex-col py-8 px-4 z-50">
+        <div class="flex items-center gap-3 px-2 mb-10">
+            <img alt="Game Memory AI Logo" class="w-10 h-10 rounded-lg"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDccGR-B0MK8-zbonZy3OkAAbT70BJK5IMg2WPQRH5rVlg_P6ubRZRBsKfNPTFfgYHH9g1lpqiaWJsFzJZ4l8GeETIv7a4kzvs2pdKNrcI8Z1uQzk4yJElkuC9LbDT_b25qYsPlw2RPspuxu2HWb6JVjU-cIxk_LVR3536uCArli3bfYW-Nh-CfI1F6t7L8IdPM-TAs6HEbCixXXltncosKuO7uTy8ZtzIRdXJBfrnO22jBac71QplCjzme8opRPEdoW2eJB3KPDsA" />
+            <div>
+                <h1 class="text-headline-md font-headline-md font-bold text-primary leading-none">Game Memory AI</h1>
+                <p class="text-label-sm font-label-sm text-on-surface-variant mt-1 opacity-70">Pro Gamer Elite</p>
+            </div>
+        </div>
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="dashboard.html">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-label-md text-label-md">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="my_games.html">
+                <span class="material-symbols-outlined">videogame_asset</span>
+                <span class="font-label-md text-label-md">My Games</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="memories.html">
+                <span class="material-symbols-outlined">auto_awesome</span>
+                <span class="font-label-md text-label-md">Memories</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="timeline.html">
+                <span class="material-symbols-outlined">timeline</span>
+                <span class="font-label-md text-label-md">Journey Timeline</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="continue_journey.html">
+                <span class="material-symbols-outlined">play_arrow</span>
+                <span class="font-label-md text-label-md">Continue Journey</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-primary font-bold border-r-2 border-primary bg-primary/5 transition-all duration-200 group"
+                href="upload_memory.html">
+                <span class="material-symbols-outlined">cloud_upload</span>
+                <span class="font-label-md text-label-md">Upload Memory</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="achievements.html">
+                <span class="material-symbols-outlined">emoji_events</span>
+                <span class="font-label-md text-label-md">Achievements</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group mt-auto"
+                href="settings.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="font-label-md text-label-md">Settings</span>
+            </a>
+        </nav>
+    </aside>
+    <!-- Top App Bar -->
+    <header
+        class="fixed top-0 right-0 w-[calc(100%-256px)] h-16 z-40 bg-background/80 backdrop-blur-md border-b border-white/5 flex justify-between items-center px-8">
+        <div class="relative w-96">
+            <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+            <input
+                class="w-full bg-surface-container-low border border-white/5 rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                placeholder="Search your digital soul..." type="text" />
+        </div>
+        <div class="flex items-center gap-6">
+            <button class="relative hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full"></span>
+            </button>
+            <div class="flex items-center gap-3 pl-4 border-l border-white/10">
+                <div class="text-right">
+                    <p class="text-label-md font-label-md text-on-surface">Alex Mercer</p>
+                    <p class="text-label-sm font-label-sm text-primary">Level 82 Guardian</p>
+                </div>
+                <div
+                    class="w-10 h-10 rounded-full glass-card flex items-center justify-center overflow-hidden border border-primary/20">
+                    <img alt="User profile photo" class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU1tfYFND34HQOL6XLB1d6_zg_7HRX4GTzj5OrQd6BGPidyv2zkobJnzemx9kAxAdMCYq5-L1vBbmHFKewuKbboKgimx5BKyWHbJOLPdTQ179CJYerRytGNIT2US-JL_a826cwKmfNZr-vuevrc80LBvG1vU-dOfuKPVZzzl0qeY0pm9SZCnOptcKEDSgWhc_yS9Uoj7xBu33vaInEwzh7qXec4l-OgJCu-f16p2kSqjjQTGJF9uCbgKcXGwyWzyIWq5bDIWyPLDc" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <main class="ml-64 pt-24 pb-12 px-8 min-h-screen">
+        <div class="max-w-[1200px] mx-auto">
+            <!-- Page Header -->
+            <div class="mb-10">
+                <h2 class="font-display text-display text-on-surface mb-2">Upload Memory</h2>
+                <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Capture your greatest gaming
+                    achievements. Our AI will analyze your gameplay, extract key highlights, and weave them into your
+                    digital journey.</p>
+            </div>
+            <!-- Workspace Grid -->
+            <div class="grid grid-cols-12 gap-gutter">
+                <!-- Left: Upload Section -->
+                <div class="col-span-12 lg:col-span-8 space-y-stack-lg">
+                    <!-- Drag & Drop Area -->
+                    <div class="glass-card rounded-xl p-16 border-2 border-dashed border-white/10 flex flex-col items-center justify-center group cursor-pointer transition-all duration-300 relative overflow-hidden"
+                        id="drop-zone">
+                        <!-- Atmospheric Glow -->
+                        <div
+                            class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        </div>
+                        <div
+                            class="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span
+                                class="material-symbols-outlined text-[48px] text-primary animate-glow">cloud_upload</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2 text-center">Drag &amp; Drop
+                            Your Memory</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant text-center max-w-sm">
+                            Support for images, video clips, or text logs. AI will automatically categorize your
+                            capture.
+                        </p>
+                        <div class="mt-8 flex gap-4">
+                            <button
+                                class="bg-primary/10 hover:bg-primary/20 text-primary px-6 py-2 rounded-lg font-label-md text-label-md transition-colors border border-primary/20">
+                                Browse Files
+                            </button>
+                            <button
+                                class="bg-white/5 hover:bg-white/10 text-on-surface px-6 py-2 rounded-lg font-label-md text-label-md transition-colors border border-white/10">
+                                Import URL
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Input Area -->
+                    <div class="glass-card rounded-xl p-8 space-y-6">
+                        <div class="space-y-2">
+                            <label class="text-label-md font-label-md text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">edit_note</span>
+                                Session Notes (Optional)
+                            </label>
+                            <textarea
+                                class="w-full bg-surface-container-lowest border border-white/10 rounded-xl p-4 text-body-md focus:ring-2 focus:ring-primary/50 outline-none transition-all placeholder:text-on-surface-variant/30"
+                                placeholder="Describe what happened... 'Just defeated Malenia after 48 attempts' or 'Found a secret chamber in the Crystal Caves'."
+                                rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right: Preview & Meta -->
+                <div class="col-span-12 lg:col-span-4 space-y-stack-lg">
+                    <!-- Preview Card -->
+                    <div class="glass-card rounded-xl overflow-hidden flex flex-col">
+                        <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                            <h4 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Preview
+                            </h4>
+                            <span
+                                class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary text-label-sm font-label-sm">
+                                <span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span> Ready
+                            </span>
+                        </div>
+                        <div class="aspect-video relative bg-surface-container-highest group">
+                            <!-- Placeholder Image representing recently dropped screenshot -->
+                            <img class="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-500"
+                                data-alt="A cinematic high-definition gaming screenshot of a futuristic cyberpunk city at night with neon lights reflecting off rainy streets and dark chrome structures. The palette is dominated by deep indigo and electric purple with cyan highlights. The atmosphere is immersive, moody, and technologically advanced, fitting a premium AI gaming companion aesthetic."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1tHQV167yS7nhsDA-E_gGSTOKhEimfTWgIxUooSDkqQpdmwZTNJUGPqpFOm0NIMib12ZUIM1RA7cSpF85qC4FvGXwibJqtsxyKnug0zpwCNQ7W8qZnZs3BuwV_eL-v6B1UgE0eR2zuzWy4M2cWUbpWLCkG7WV_pekTv6MfoLstnMCF2ze1xDUz4MmrQMQb6zFjweKtz_JXiekMRVEMNjNbTi7DOchyBVsWfqVXtRlBkDbbne9a42bpzGjJnRbimqqB4nV30jEoho" />
+                            <div
+                                class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+                                <button
+                                    class="p-3 bg-white/10 backdrop-blur-md rounded-full border border-white/20 hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-white">zoom_in</span>
+                                </button>
+                            </div>
+                            <!-- Overlay Scanlines effect -->
+                            <div
+                                class="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,255,0.02))] bg-[length:100%_2px,3px_100%]">
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-label-sm font-label-sm text-on-surface-variant">File Name</p>
+                                    <p class="text-body-md font-body-md text-on-surface">boss_slayer_v1.mp4</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-label-sm font-label-sm text-on-surface-variant">Size</p>
+                                    <p class="text-body-md font-body-md text-on-surface">24.5 MB</p>
+                                </div>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-label-sm font-label-sm text-on-surface-variant">AI Detection</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span
+                                        class="bg-primary/10 text-primary px-2 py-0.5 rounded text-label-sm font-label-sm">Elden
+                                        Ring</span>
+                                    <span
+                                        class="bg-primary/10 text-primary px-2 py-0.5 rounded text-label-sm font-label-sm">Boss
+                                        Fight</span>
+                                    <span
+                                        class="bg-primary/10 text-primary px-2 py-0.5 rounded text-label-sm font-label-sm">Victory</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- CTA Section -->
+                    <div class="space-y-4">
+                        <button
+                            class="w-full h-16 bg-primary-container hover:bg-primary-container/90 text-on-primary-container rounded-xl flex items-center justify-center gap-3 group transition-all duration-300 shadow-[0_0_30px_rgba(124,58,237,0.3)] hover:shadow-[0_0_50px_rgba(124,58,237,0.5)] border border-primary/20">
+                            <span
+                                class="material-symbols-outlined font-variation-settings: 'FILL' 1 group-hover:rotate-12 transition-transform">auto_awesome</span>
+                            <span class="font-headline-md text-headline-md">Generate AI Memory</span>
+                        </button>
+                        <p class="text-center text-label-sm font-label-sm text-on-surface-variant/60">
+                            Estimating 45 seconds to synthesize your journey node.
+                        </p>
+                    </div>
+                    <!-- AI Insights List -->
+                    <div class="space-y-4 pt-4">
+                        <h4 class="font-label-md text-label-md text-primary px-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">psychology</span>
+                            Synthesizing Context
+                        </h4>
+                        <div class="relative space-y-6 pl-4 border-l border-primary/20 ml-2">
+                            <div class="glass-card p-4 rounded-xl relative">
+                                <div
+                                    class="absolute -left-[21px] top-4 w-3 h-3 rounded-full bg-primary shadow-[0_0_10px_rgba(210,187,255,0.8)]">
+                                </div>
+                                <p class="text-label-sm font-label-sm text-primary mb-1">STRENGTH DETECTED</p>
+                                <p class="text-body-md text-on-surface-variant">Exceptional parry timing observed during
+                                    frame 120-145.</p>
+                            </div>
+                            <div class="glass-card p-4 rounded-xl relative">
+                                <div
+                                    class="absolute -left-[21px] top-4 w-3 h-3 rounded-full bg-white/20 border border-white/10">
+                                </div>
+                                <p class="text-label-sm font-label-sm text-on-surface-variant mb-1">GEAR ANALYSIS</p>
+                                <p class="text-body-md text-on-surface-variant">Inventory sync: Moonveil Katana +10
+                                    recognized.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Micro-interactions Script -->
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('drop-zone-active');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('drop-zone-active');
+            }, false);
+        });
+
+        dropZone.addEventListener('click', () => {
+            // Logic for file selection
+            console.log('Browse clicked');
+        });
+    </script>
+</body>
+
+</html>
