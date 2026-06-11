@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Register | Aetheris Game Memory AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100;300;400;500;600;700;800;900&display=swap');
+        
+        body {
+            font-family: 'Geist', sans-serif;
+            background-color: #0A0A0F;
+            overflow-x: hidden;
+        }
+
+        .glass-surface {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .glass-input:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+            outline: none;
+        }
+
+        .timeline-node {
+            position: relative;
+        }
+
+        .timeline-node::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 24px;
+            bottom: -24px;
+            width: 1px;
+            background: linear-gradient(to bottom, #7c3aed, transparent);
+            opacity: 0.3;
+        }
+
+        .timeline-node:last-child::before {
+            display: none;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-up {
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .glow-point {
+            width: 4px;
+            height: 4px;
+            background: #7c3aed;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #7c3aed;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#958da1",
+                        "secondary": "#adc6ff",
+                        "surface-container-low": "#1b1b20",
+                        "on-background": "#e4e1e9",
+                        "background": "#131318",
+                        "on-primary": "#3f008e",
+                        "outline-variant": "#4a4455",
+                        "primary": "#d2bbff",
+                        "surface-container-lowest": "#0e0e13",
+                        "primary-container": "#7c3aed",
+                        "on-surface": "#e4e1e9",
+                        "on-surface-variant": "#ccc3d8",
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Geist"],
+                        "body-md": ["Geist"],
+                        "display": ["Geist"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- Left Side: Immersive Branding Panel -->
+<section class="hidden lg:flex w-1/2 relative overflow-hidden bg-surface-container-lowest">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0">
+<img alt="Preserving gaming memories" class="w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuQSsAssdbULdG5HowPIbmT0j2sFPZdg3CW3LRhAMS_kpTEw_jj3HXzkAM2YNL7zzjT8KqUhNtAg408miLKg6nYpeainmIGbfAAhJh8qVFHgmWBRTf3Z3sBDE0ZSLpXP8Fve4NPCdRYuwfHBZ51hiu-0HCaUYD0ShE4_aafxOlBXvhVgBtS0gP-2aWh53ZUbvmJMDxc8p8ymf-YzrfKt_W6CB0IuF0WeDHD46z2EWnkqeMab86p2zIOFIZjYq-KjKcNI1HJAafKuo"/>
+<div class="absolute inset-0 bg-gradient-to-r from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 p-16 flex flex-col justify-center h-full w-full max-w-2xl">
+<h1 class="font-display text-[56px] leading-[1.1] font-bold tracking-tight mb-6 animate-fade-up" style="animation-delay: 0.1s;">
+                Your Adventures <br/>
+<span class="text-primary-container">Deserve to Be Remembered</span>
+</h1>
+<p class="font-body-md text-lg text-on-surface-variant mb-12 max-w-lg animate-fade-up" style="animation-delay: 0.2s;">
+                Aetheris AI preserves the essence of your gameplay. From legendary victories to quiet explorations, our neural archives transform raw data into a living legacy of your digital journey.
+            </p>
+<!-- Vertical Timeline Illustration -->
+<div class="flex flex-col gap-12 animate-fade-up" style="animation-delay: 0.3s;">
+<div class="timeline-node flex items-start gap-6">
+<div class="w-12 h-12 rounded-full glass-surface flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-xl">auto_awesome</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Neural Capture</h4>
+<p class="text-sm text-on-surface-variant">AI-driven analysis of every critical choice and encounter.</p>
+</div>
+</div>
+<div class="timeline-node flex items-start gap-6">
+<div class="w-12 h-12 rounded-full glass-surface flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-xl">history_edu</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Chronicled Legacy</h4>
+<p class="text-sm text-on-surface-variant">Automated storytelling that weaves your play sessions into a saga.</p>
+</div>
+</div>
+<div class="timeline-node flex items-start gap-6">
+<div class="w-12 h-12 rounded-full glass-surface flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-xl">query_stats</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Aetheris Insight</h4>
+<p class="text-sm text-on-surface-variant">Deep patterns uncovered within your unique gaming DNA.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Side: Registration Form -->
+<section class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative">
+<!-- Ambient Blur Effects -->
+<div class="absolute top-1/4 right-1/4 w-64 h-64 bg-primary-container/10 blur-[100px] rounded-full"></div>
+<div class="absolute bottom-1/4 left-1/4 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full"></div>
+<div class="w-full max-w-md animate-fade-up" style="animation-delay: 0.4s;">
+<div class="glass-surface p-8 sm:p-10 rounded-3xl relative overflow-hidden">
+<!-- Glowing Point -->
+<div class="absolute top-4 left-4 glow-point"></div>
+<!-- Header -->
+<div class="flex flex-col items-center text-center mb-10">
+<img alt="Game Memory AI Logo" class="w-16 h-16 mb-4" src="https://lh3.googleusercontent.com/aida/AP1WRLtskqLjraW60zC2bikXoQK3hzww0d4c4oUQhMwrUZmaWmVFX05ZKfjSPS0oab0s8l_XkGP-2YQVPGNWiOeKDhF7hnupY4x8_VzLj_MzDQlMNnTwuOlZc9hS2jvomcMdjfYKPBtt58YJwkAa40Ch88S7eiEnAnH0cIY_14PFjoW-97gb8k0xrJMzwQ9q7jV9TMsWfsmH75E3h38cwNDI1PbaNfQBqx6no6uYM292B7sL8I0n6ePkdjILqbA"/>
+<h2 class="text-2xl font-bold font-display tracking-tight text-on-surface">Game Memory AI</h2>
+<p class="text-sm text-on-surface-variant mt-2 font-medium">Begin your journey into the archives.</p>
+</div>
+<!-- Form -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<div class="space-y-1.5">
+<label class="text-[12px] uppercase tracking-widest font-bold text-on-surface-variant ml-1">Full Name</label>
+<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" placeholder="Commander Shepard" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[12px] uppercase tracking-widest font-bold text-on-surface-variant ml-1">Email Address</label>
+<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" placeholder="spectre@citadel.com" type="email"/>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="text-[12px] uppercase tracking-widest font-bold text-on-surface-variant ml-1">Password</label>
+<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" placeholder="••••••••" type="password"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[12px] uppercase tracking-widest font-bold text-on-surface-variant ml-1">Confirm</label>
+<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<div class="flex items-start gap-3 py-2">
+<input class="mt-1 rounded border-outline-variant bg-transparent text-primary-container focus:ring-primary-container focus:ring-offset-background h-4 w-4" id="terms" type="checkbox"/>
+<label class="text-xs text-on-surface-variant leading-relaxed cursor-pointer select-none" for="terms">
+                            I agree to the <a class="text-primary hover:underline transition-all" href="#">Terms of Service</a> and <a class="text-primary hover:underline transition-all" href="#">Privacy Policy</a>
+</label>
+</div>
+<button class="w-full h-12 bg-primary-container hover:bg-primary-container/90 active:scale-[0.98] transition-all text-on-primary-container font-bold rounded-xl shadow-lg shadow-primary-container/20">
+                        Begin My Journey
+                    </button>
+</form>
+<!-- Divider -->
+<div class="relative my-8">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/20"></div>
+</div>
+<div class="relative flex justify-center text-xs">
+<span class="px-3 bg-[#111118] text-on-surface-variant font-medium">or sign up with</span>
+</div>
+</div>
+<!-- OAuth Buttons -->
+<div class="grid grid-cols-3 gap-3">
+<button class="h-12 flex items-center justify-center glass-surface hover:bg-white/5 transition-colors rounded-xl group" title="Sign up with Discord">
+<img alt="Discord" class="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgv66fORTrsumqNqpuwpPxxdLmxVWDnV2qiV84tucHf_L5my8_tDV6-HxL8DKjsijpv0imI30FUv8VJz4zJgkuHTe2hB34dBhSSWqj4WRGKG1onsNgNc1d0TZ0XtCeY37FBfSrwEhbXwIcGOFkSQVGPlDhghwqgcZGKjo36NbIn3hdLBKlbG2DVoiKze94-Vz9V676zMmN98cjr8Ck3MSVew1kR1YnYBp6dclSMT0eK_zCUTLlE3B08CrWOYysKHzlzXh7NigRH0o"/>
+</button>
+<button class="h-12 flex items-center justify-center glass-surface hover:bg-white/5 transition-colors rounded-xl group" title="Sign up with Google">
+<img alt="Google" class="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrG5enI2xXwu22CfJ3ph8cXT5r6qrbi7z1XMnn3UG2x_ZpV-ITP0KSY_ZNKrXhXzdXlTigy9VCvIKGZIpx0tuxq_hGPVNrGD9cKUpocmc60BjW8oXGeERWo2uqMRiPU1fToO9OWr30UYzPKBFxCt-7fKXBzLhwTkhJQd9R_yUk_nXyDxnbrpnxTYsTXouQolmP7zZm5oejNC_6wNjlxqTUkv3EwJxDX58tLHuDh083ZI86vNpvbwk3ibpbUkvNJjHwQfSDBbnLdDg"/>
+</button>
+<button class="h-12 flex items-center justify-center glass-surface hover:bg-white/5 transition-colors rounded-xl group" title="Sign up with Steam">
+<img alt="Steam" class="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK9hznjlZABRViCpaFitLysPyHLZatTweShWcruGn6nu81a9pr4F4eU5YXraTrkUI7kBLE6UcXgm8QFnvJVFDTYIe_HgcAYz5WiGD_3rK4jXVR6C4jo5tmdC5uQg2gez4qDFM9OsBNwcphLKIKjhwhMqrn_h4-xuqO-E9GBSTSTfDE5gTSCzYuC-CYL2V-WiHSvwVR_sF8rx7xavEgqRXhLO-jysBh7n1CMpvxa9_NK12zmxJZhGJXXiRN3zMpcKdCejIcMSNbS-E"/>
+</button>
+</div>
+<!-- Footer -->
+<div class="mt-10 text-center">
+<p class="text-sm text-on-surface-variant">
+                        Already have an account? 
+                        <a class="text-primary font-bold hover:underline ml-1" href="#">Sign in</a>
+</p>
+</div>
+</div>
+<!-- Bottom Legal Links -->
+<div class="mt-8 flex justify-center gap-6 opacity-40">
+<a class="text-[10px] uppercase tracking-widest hover:opacity-100 transition-opacity" href="#">Status</a>
+<a class="text-[10px] uppercase tracking-widest hover:opacity-100 transition-opacity" href="#">Security</a>
+<a class="text-[10px] uppercase tracking-widest hover:opacity-100 transition-opacity" href="#">Help</a>
+</div>
+</div>
+</section>
+<!-- Custom Micro-interaction Script -->
+<script>
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                // Potential for adding dynamic glow or sound effects if needed
+            });
+        });
+    </script>
+</body></html>
