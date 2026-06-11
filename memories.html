@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .glow-point {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #d2bbff;
+            box-shadow: 0 0 10px #7c3aed;
+        }
+
+        body {
+            background-color: #131318;
+            color: #e4e1e9;
+            font-family: 'Geist', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #131318;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #35343a;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4455;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#732ee4",
+                        "primary": "#d2bbff",
+                        "outline": "#958da1",
+                        "surface-bright": "#39383e",
+                        "background": "#131318",
+                        "primary-fixed-dim": "#d2bbff",
+                        "tertiary": "#4edea3",
+                        "on-tertiary": "#003824",
+                        "on-tertiary-fixed": "#002113",
+                        "surface": "#131318",
+                        "on-secondary-fixed": "#001a42",
+                        "surface-container": "#1f1f25",
+                        "on-primary-fixed": "#25005a",
+                        "on-surface-variant": "#ccc3d8",
+                        "surface-tint": "#d2bbff",
+                        "tertiary-container": "#007650",
+                        "inverse-surface": "#e4e1e9",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#35343a",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "surface-variant": "#35343a",
+                        "on-tertiary-container": "#76ffc2",
+                        "inverse-on-surface": "#303036",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#131318",
+                        "on-primary-container": "#ede0ff",
+                        "on-background": "#e4e1e9",
+                        "on-surface": "#e4e1e9",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary": "#3f008e",
+                        "primary-fixed": "#eaddff",
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-container-high": "#2a292f",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "primary-container": "#7c3aed",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-secondary-container": "#e6ecff",
+                        "on-secondary": "#002e6a",
+                        "surface-container-low": "#1b1b20",
+                        "secondary-container": "#0566d9",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#d8e2ff",
+                        "secondary": "#adc6ff",
+                        "outline-variant": "#4a4455",
+                        "on-tertiary-fixed-variant": "#005236"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "display": ["Geist"],
+                        "body-md": ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-background">
+    <!-- Sidebar Navigation -->
+    <aside
+        class="h-full w-64 fixed left-0 top-0 border-r border-white/10 bg-surface/10 backdrop-blur-xl shadow-2xl flex flex-col py-8 px-4 z-50">
+        <div class="flex items-center gap-3 mb-10 px-2">
+            <img alt="Game Memory AI Logo" class="w-10 h-10 rounded-lg"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDccGR-B0MK8-zbonZy3OkAAbT70BJK5IMg2WPQRH5rVlg_P6ubRZRBsKfNPTFfgYHH9g1lpqiaWJsFzJZ4l8GeETIv7a4kzvs2pdKNrcI8Z1uQzk4yJElkuC9LbDT_b25qYsPlw2RPspuxu2HWb6JVjU-cIxk_LVR3536uCArli3bfYW-Nh-CfI1F6t7L8IdPM-TAs6HEbCixXXltncosKuO7uTy8ZtzIRdXJBfrnO22jBac71QplCjzme8opRPEdoW2eJB3KPDsA" />
+            <div>
+                <h1 class="text-headline-md font-headline-md font-bold text-primary">Game Memory AI</h1>
+                <p class="text-label-sm font-label-sm text-on-surface-variant opacity-70">Pro Gamer Elite</p>
+            </div>
+        </div>
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="dashboard.html">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="text-label-md font-label-md">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="my_games.html">
+                <span class="material-symbols-outlined">videogame_asset</span>
+                <span class="text-label-md font-label-md">My Games</span>
+            </a>
+            <!-- Active State -->
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary font-bold border-r-2 border-primary bg-primary/10 transition-all duration-200 scale-95"
+                href="memories.html">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                <span class="text-label-md font-label-md">Memories</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="timeline.html">
+                <span class="material-symbols-outlined">timeline</span>
+                <span class="text-label-md font-label-md">Journey Timeline</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="continue_journey.html">
+                <span class="material-symbols-outlined">play_arrow</span>
+                <span class="text-label-md font-label-md">Continue Journey</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="upload_memory.html">
+                <span class="material-symbols-outlined">cloud_upload</span>
+                <span class="text-label-md font-label-md">Upload Memory</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="achievements.html">
+                <span class="material-symbols-outlined">emoji_events</span>
+                <span class="text-label-md font-label-md">Achievements</span>
+            </a>
+        </nav>
+        <div class="pt-8 border-t border-white/5">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all duration-200 group"
+                href="settings.html">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="text-label-md font-label-md">Settings</span>
+            </a>
+            <div class="mt-6 flex items-center gap-3 px-2">
+                <div
+                    class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold">
+                    JD</div>
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-label-md font-label-md truncate">John Doe</p>
+                    <p class="text-label-sm font-label-sm text-on-surface-variant opacity-60">Level 85 Arch-Mage</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <!-- Top Navigation Bar -->
+    <header
+        class="fixed top-0 right-0 w-[calc(100%-256px)] h-16 z-40 bg-background/80 backdrop-blur-md border-b border-white/5 flex justify-between items-center px-8">
+        <div class="flex items-center flex-1 max-w-xl">
+            <div class="relative w-full group">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 group-focus-within:text-primary transition-colors">search</span>
+                <input
+                    class="w-full bg-black/20 border border-white/10 rounded-full py-2 pl-10 pr-4 text-body-md font-body-md focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                    placeholder="Search memories, bosses, or quests..." type="text" />
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button
+                class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-white/5 transition-all">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <button
+                class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-primary transition-all">
+                <img alt="User avatar" class="w-full h-full object-cover"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-jVquhbRmgxhy8YfncLvqhIlqyObNTzgZfrhM7Qt9TpOZnXqhWziK_7QQkoXbCjcekkkvQEQVBR7RSFxGUR7SoDMzGOOVWv8Ml25At-cC00f2HrSJhojC6CudlSPsj6IakQHxjcD7VRDeSW-xxTtZXECHgiMpAbuLtULUzXt2M-z8ZIoOZfftABPveVWgXYX2LWJlkaerpp2L6xPQzQCM6Dd_byBSSg7Q8_RDzecVsygmHouLFktxtygup-plDfM5j-Uax4GP_28" />
+            </button>
+        </div>
+    </header>
+    <!-- Main Content Canvas -->
+    <main class="ml-64 pt-24 pb-16 px-12">
+        <!-- Page Header -->
+        <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+                <h2 class="text-display font-display mb-2">Memories</h2>
+                <p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl">Relive your greatest triumphs and
+                    strategic masterclasses, automatically archived by AI.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button
+                    class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-full font-label-md text-label-md flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary-container/20">
+                    <span class="material-symbols-outlined">auto_fix_high</span>
+                    Generate Highlights
+                </button>
+            </div>
+        </div>
+        <!-- Filter Bar -->
+        <div class="flex flex-wrap items-center gap-4 mb-12">
+            <span class="text-label-md font-label-md text-on-surface-variant/60 uppercase tracking-widest mr-2">Filter
+                by:</span>
+            <button
+                class="px-5 py-2 rounded-full border border-primary text-primary bg-primary/10 text-label-md font-label-md transition-all">All
+                Memories</button>
+            <button
+                class="px-5 py-2 rounded-full border border-white/10 text-on-surface-variant hover:border-primary/50 hover:bg-white/5 text-label-md font-label-md transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">skull</span> Bosses
+            </button>
+            <button
+                class="px-5 py-2 rounded-full border border-white/10 text-on-surface-variant hover:border-primary/50 hover:bg-white/5 text-label-md font-label-md transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">auto_stories</span> Story
+            </button>
+            <button
+                class="px-5 py-2 rounded-full border border-white/10 text-on-surface-variant hover:border-primary/50 hover:bg-white/5 text-label-md font-label-md transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">explore</span> Quests
+            </button>
+            <button
+                class="px-5 py-2 rounded-full border border-white/10 text-on-surface-variant hover:border-primary/50 hover:bg-white/5 text-label-md font-label-md transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">groups</span> NPCs
+            </button>
+        </div>
+        <!-- Memory Bento Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Memory Card 1 -->
+            <div class="glass-card rounded-xl overflow-hidden group">
+                <div class="relative aspect-video">
+                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        data-alt="A breathtaking cinematic screenshot from an epic fantasy game showing a colossal star-scourge general on a battlefield under a crimson sky. The lighting is dramatic and heavy with orange and purple hues. The visual style is high-fidelity 4k gaming realism with atmospheric fog and particle effects. A sense of overwhelming scale and legendary conflict permeates the scene."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwLQ9k4sw2GI8k7Y2aC13cNZEuAsr9WNAs0pQ9T4AL6Rda3cMk5gV9puWWWyAdEOB9cXgxxGLfkbsylLjOC0ffnwS027LJeLg1Mh2rv9rHGqvJoowVf7hhMRuMeWO7Jqjgq-LCSso6a-cl_n5CTdC_xNPPCL96fm_2Tfvbta2GbW6Paof32hE1F6Lf-FcWwQrSHG8ZItv9FGZxENhOuNiiwq4ONLSTX95QSuVv8iMZyI2Y2nOhprpSuLOMrvxGwBacRe0CQRqHDPU" />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity">
+                    </div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span
+                            class="bg-primary/20 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter">Boss
+                            Fight</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3
+                            class="text-headline-md font-headline-md text-on-surface group-hover:text-primary transition-colors">
+                            The Fall of Radahn</h3>
+                        <div class="glow-point mt-2"></div>
+                    </div>
+                    <p class="text-body-md font-body-md text-on-surface-variant/80 line-clamp-2 mb-4">A chaotic clash in
+                        the Caelid Wilds. Witness the final moments of the Starscourge as he descends like a meteor.</p>
+                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">Oct 12, 2023</span>
+                        </div>
+                        <span
+                            class="text-label-sm font-label-sm px-2 py-1 rounded bg-white/5 text-on-surface-variant">Elden
+                            Ring</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Memory Card 2 -->
+            <div class="glass-card rounded-xl overflow-hidden group">
+                <div class="relative aspect-video">
+                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        data-alt="Intricate cyberpunk cityscape at night with neon blue and magenta reflections on wet pavement. Cybernetic characters walk through a high-tech bazaar filled with holograms and chrome surfaces. The mood is moody and futuristic with a focus on detailed textures and volumetric lighting. The color palette is dominated by deep blues and vibrant pinks."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEAoiHeZQM0pqs_g-6Kdj6NqDUCr7en-A_ZdBlQWr8817TJ2mM0wHKAkZ5YVunZnFi8_ZLfSoZff1-C2ofLi2_eDKufB1wwjc0J4I0-24Kn2KOl9vUW7wDKzrSiOuf_a5t9Vvoa4jf7TaR3ddsKFk97F0VBrif51kskZoRxE41ER_9ZYRm1fNOX57ZVeyAIlUicmMEpckYeaHW-BodXEpTnQPqhq18ZCxYapaKp8QiiUmSUD3bWvrbFfzMpNpiRIJI0bmtoqhBD2Q" />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity">
+                    </div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span
+                            class="bg-tertiary/20 backdrop-blur-md border border-tertiary/30 text-tertiary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter">Story
+                            Beat</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3
+                            class="text-headline-md font-headline-md text-on-surface group-hover:text-primary transition-colors">
+                            Neon Whispers</h3>
+                        <div class="glow-point mt-2"></div>
+                    </div>
+                    <p class="text-body-md font-body-md text-on-surface-variant/80 line-clamp-2 mb-4">Uncovering the
+                        corporate conspiracy in the heart of Night City. A deep dive into the nether layers of the net.
+                    </p>
+                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">Oct 10, 2023</span>
+                        </div>
+                        <span
+                            class="text-label-sm font-label-sm px-2 py-1 rounded bg-white/5 text-on-surface-variant">Cyberpunk
+                            2077</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Memory Card 3 -->
+            <div class="glass-card rounded-xl overflow-hidden group">
+                <div class="relative aspect-video">
+                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        data-alt="A serene open-world landscape at sunrise with rolling green hills and a distant mountain peak. A lone warrior stands on a cliff edge looking out over a vast valley filled with ruins. The lighting is soft and golden, creating a sense of peace and wonder. Minimalist art style with clean lines and a vibrant natural color palette."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA45r9L3L-8fglOPnbhWsrvXlJKqg49By553OS2YYg3x4KvC6gVioooe1hZJg9SoTRT2J_BXsM15E87QufXhu1kjb997FwiJ7Ua-Fd7MDxGNKtH3tPsbr-W9UJIYClDDaTpAEcg2Iswj0Z_WvbA_suH1KiTcQzbh1DeCcKbKS998IQfZwyMUM3r6NLJz9z3SZlBEgFKovcKWVrilAWb-MulbyMvzmRluB1fEScXUvcbLrVDSu9HT9AzZG3fcGZVe2vwqLnVAhTE7yE" />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity">
+                    </div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span
+                            class="bg-secondary/20 backdrop-blur-md border border-secondary/30 text-secondary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter">Quest
+                            Log</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3
+                            class="text-headline-md font-headline-md text-on-surface group-hover:text-primary transition-colors">
+                            Peak of Serenity</h3>
+                        <div class="glow-point mt-2"></div>
+                    </div>
+                    <p class="text-body-md font-body-md text-on-surface-variant/80 line-clamp-2 mb-4">Reaching the
+                        summit of Mount Hylia after a grueling ascent. The dawn light reveals the path forward.</p>
+                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">Oct 08, 2023</span>
+                        </div>
+                        <span
+                            class="text-label-sm font-label-sm px-2 py-1 rounded bg-white/5 text-on-surface-variant">Zelda:
+                            TOTK</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Memory Card 4 -->
+            <div class="glass-card rounded-xl overflow-hidden group">
+                <div class="relative aspect-video">
+                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        data-alt="First-person perspective of a tactical shooter in a high-tech laboratory environment. Sleek white walls are stained with holographic sparks from a nearby firefight. High-contrast lighting with deep shadows and bright lens flares. The visual style is crisp and professional, emphasizing precision and fast-paced action. Cool color tones with sudden warm flashes."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYPlUwraqHGM1t32C6Kqt1fiYKZCVKBbXeWJBKzsP01zewvYZDMaXCkgbYPnDexiBca0tmT7cn_rzFAPZ1wXzG4SoPrL_2MIIjhF4movGS7FV0F3jLDmvrKWczyXapheDfc3kBzZopiUIIkIlwErBQ3Sn2LzBHikHrKKa3na0gX9GNcxiHIy2CeomzoVB1eqcEmPM_ARke_EP7AU21akHSQYqe2v3VWbk8WxthERAiTACKU3xSCwelBb4RjNZWniZXSf0Ml_TlZk4" />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity">
+                    </div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span
+                            class="bg-error/20 backdrop-blur-md border border-error/30 text-error text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter">Achievement</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3
+                            class="text-headline-md font-headline-md text-on-surface group-hover:text-primary transition-colors">
+                            Ace in the Hole</h3>
+                        <div class="glow-point mt-2"></div>
+                    </div>
+                    <p class="text-body-md font-body-md text-on-surface-variant/80 line-clamp-2 mb-4">A perfect 1v5
+                        clutch on Haven. AI analyzed your crosshair placement as 'Inhuman'.</p>
+                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">Oct 05, 2023</span>
+                        </div>
+                        <span
+                            class="text-label-sm font-label-sm px-2 py-1 rounded bg-white/5 text-on-surface-variant">Valorant</span>
+                    </div>
+                </div>
+            </div>
+            <!-- More Cards could repeat here -->
+            <!-- Memory Card 5 -->
+            <div class="glass-card rounded-xl overflow-hidden group">
+                <div class="relative aspect-video">
+                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        data-alt="Digital art of a futuristic space station orbiting a massive glowing gas giant. Tiny space vessels traverse the docking bays amidst a swarm of maintenance drones. The scale is immense, with intricate mechanical details visible on the station's hull. Soft blue and orange lighting highlights the sleek surfaces. A feeling of deep space exploration and technical marvel."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDckkfzube5g9M8yG8_MdmACuOlItPt4DRfPf4YchvExl8LiyqSH8-LIMahIvjEEVOEjexRuMk3uVa86K16uqR7_pajjDD19EnGc56wuUNOx9zZthg0M5sRwgpQprB77qbJB2u2I9e2DKljvd8ygu8AoaGhlcaDN2HrEGMz1QQwZ-0VnLY7fAFuBr8wTsvDQzDXpjZCsjyJ_eifjFyO1LFsA2RK2-JYGZxAzHXm-gHDx7vUGKUsgBWbxjy1_OTCWp6T8w-4yG6oJ_E" />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity">
+                    </div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span
+                            class="bg-primary/20 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter">Exploration</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3
+                            class="text-headline-md font-headline-md text-on-surface group-hover:text-primary transition-colors">
+                            Void Station Alpha</h3>
+                        <div class="glow-point mt-2"></div>
+                    </div>
+                    <p class="text-body-md font-body-md text-on-surface-variant/80 line-clamp-2 mb-4">Discovered the
+                        hidden sector in the Andromeda belt. The station AI greeted us as creators.</p>
+                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">Sep 28, 2023</span>
+                        </div>
+                        <span
+                            class="text-label-sm font-label-sm px-2 py-1 rounded bg-white/5 text-on-surface-variant">Starfield</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Memory Card 6 -->
+            <div class="glass-card rounded-xl overflow-hidden group">
+                <div class="relative aspect-video">
+                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        data-alt="A dark and atmospheric dungeon corridor illuminated by flickering torchlight. Medieval stone walls covered in moss and shadows that seem to move. A mysterious figure in dark robes stands at the end of the hall. The visual style is gritty and immersive, with heavy contrast and rich textures. Dark fantasy mood with high tension."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcySm7JcG9E9E57RWn7n8Iey_sOgKwXsvgsTfGIBSwrHh0qGaWTM2AWcnJpHtkOCgxcd0h9SaAKGTqUUP_EUzI8GZXLmzudAdGaBnFbS3nrq9bLjRt7u0ZmZ7droU0K1aItdCEgZ_YUO5nzNAP-x9Np9tcHSMeUyRyXt8DzBIBOx6NjqeZpeWQRh2C3wzgBe185C_vM5vG8ucak7q5qFYwkludkM_YArRvj68sB3oWL1Fh8lvOOmDLHsSiu1RdaO-OFBokfJOJe0A" />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity">
+                    </div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span
+                            class="bg-primary/20 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-tighter">NPC
+                            Meet</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3
+                            class="text-headline-md font-headline-md text-on-surface group-hover:text-primary transition-colors">
+                            The Shadow Sage</h3>
+                        <div class="glow-point mt-2"></div>
+                    </div>
+                    <p class="text-body-md font-body-md text-on-surface-variant/80 line-clamp-2 mb-4">An cryptic
+                        encounter in the Sunken Crypts. He spoke of a destiny written in the stars.</p>
+                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">Sep 22, 2023</span>
+                        </div>
+                        <span
+                            class="text-label-sm font-label-sm px-2 py-1 rounded bg-white/5 text-on-surface-variant">Lords
+                            of Fallen</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Empty Placeholder Card for Uploading -->
+            <button
+                class="glass-card rounded-xl border-dashed border-2 border-white/10 hover:border-primary/40 flex flex-col items-center justify-center min-h-[300px] gap-4 group">
+                <div
+                    class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:bg-primary/10 transition-all">
+                    <span class="material-symbols-outlined text-[40px]">add_photo_alternate</span>
+                </div>
+                <span class="text-label-md font-label-md text-on-surface-variant">Manually Upload Memory</span>
+            </button>
+        </div>
+    </main>
+    <!-- Floating AI Insights List (Lightweight Atmospheric Effect) -->
+    <div class="fixed bottom-8 right-8 w-80 z-50 flex flex-col gap-4" id="ai-insights">
+        <!-- Insight 1 -->
+        <div class="glass-card p-4 rounded-xl shadow-2xl translate-x-full transition-transform duration-500 ease-out"
+            id="insight-1">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                </div>
+                <span class="text-label-sm font-label-sm text-primary uppercase font-bold">AI Insight</span>
+                <button class="ml-auto text-on-surface-variant hover:text-white transition-colors"
+                    onclick="this.parentElement.parentElement.remove()">
+                    <span class="material-symbols-outlined text-[16px]">close</span>
+                </button>
+            </div>
+            <p class="text-body-md font-body-md text-on-surface">Memory sync complete. 12 new high-quality moments
+                extracted from your last Elden Ring session.</p>
+        </div>
+    </div>
+    <script>
+        // Smooth entrance for AI insights
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const insight = document.getElementById('insight-1');
+                if (insight) insight.classList.remove('translate-x-full');
+            }, 1500);
+        });
+
+        // Hover effect for glow points - subtle interaction
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const glow = card.querySelector('.glow-point');
+                if (glow) {
+                    glow.style.boxShadow = "0 0 20px #7c3aed, 0 0 40px #7c3aed";
+                    glow.style.transform = "scale(1.5)";
+                    glow.style.transition = "all 0.4s ease";
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                const glow = card.querySelector('.glow-point');
+                if (glow) {
+                    glow.style.boxShadow = "0 0 10px #7c3aed";
+                    glow.style.transform = "scale(1)";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
