@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+    <head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Elden Ring - Game Memory AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glow-point {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #d2bbff;
+            box-shadow: 0 0 8px #d2bbff;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(210, 187, 255, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#732ee4",
+                        "primary": "#d2bbff",
+                        "outline": "#958da1",
+                        "surface-bright": "#39383e",
+                        "background": "#131318",
+                        "primary-fixed-dim": "#d2bbff",
+                        "tertiary": "#4edea3",
+                        "on-tertiary": "#003824",
+                        "on-tertiary-fixed": "#002113",
+                        "surface": "#131318",
+                        "on-secondary-fixed": "#001a42",
+                        "surface-container": "#1f1f25",
+                        "on-primary-fixed": "#25005a",
+                        "on-surface-variant": "#ccc3d8",
+                        "surface-tint": "#d2bbff",
+                        "tertiary-container": "#007650",
+                        "inverse-surface": "#e4e1e9",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#35343a",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "surface-variant": "#35343a",
+                        "on-tertiary-container": "#76ffc2",
+                        "inverse-on-surface": "#303036",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#131318",
+                        "on-primary-container": "#ede0ff",
+                        "on-background": "#e4e1e9",
+                        "on-surface": "#e4e1e9",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary": "#3f008e",
+                        "primary-fixed": "#eaddff",
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-container-high": "#2a292f",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "primary-container": "#7c3aed",
+                        "surface-container-lowest": "#0e0e13",
+                        "on-secondary-container": "#e6ecff",
+                        "on-secondary": "#002e6a",
+                        "surface-container-low": "#1b1b20",
+                        "secondary-container": "#0566d9",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#d8e2ff",
+                        "secondary": "#adc6ff",
+                        "outline-variant": "#4a4455",
+                        "on-tertiary-fixed-variant": "#005236"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "display": ["Geist"],
+                        "body-md": ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}[type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select{-webkit-appearance:none;appearance:none;background-color:#fff;border-color:#6b7280;border-width:1px;border-radius:0px;padding-top:0.5rem;padding-right:0.75rem;padding-bottom:0.5rem;padding-left:0.75rem;font-size:1rem;line-height:1.5rem;--tw-shadow:0 0 #0000;}[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);border-color:#2563eb}input::placeholder,textarea::placeholder{color:#6b7280;opacity:1}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-date-and-time-value{min-height:1.5em;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field{padding-top:0;padding-bottom:0}select{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");background-position:right 0.5rem center;background-repeat:no-repeat;background-size:1.5em 1.5em;padding-right:2.5rem;print-color-adjust:exact}[multiple],[size]:where(select:not([size="1"])){background-image:initial;background-position:initial;background-repeat:unset;background-size:initial;padding-right:0.75rem;print-color-adjust:unset}[type='checkbox'],[type='radio']{-webkit-appearance:none;appearance:none;padding:0;print-color-adjust:exact;display:inline-block;vertical-align:middle;background-origin:border-box;-webkit-user-select:none;user-select:none;flex-shrink:0;height:1rem;width:1rem;color:#2563eb;background-color:#fff;border-color:#6b7280;border-width:1px;--tw-shadow:0 0 #0000}[type='checkbox']{border-radius:0px}[type='radio']{border-radius:100%}[type='checkbox']:focus,[type='radio']:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:2px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[type='checkbox']:checked,[type='radio']:checked{border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat}[type='checkbox']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='checkbox']:checked{-webkit-appearance:auto;appearance:auto}}[type='radio']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='radio']:checked{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus{border-color:transparent;background-color:currentColor}[type='checkbox']:indeterminate{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat;}@media (forced-colors: active) {[type='checkbox']:indeterminate{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus{border-color:transparent;background-color:currentColor}[type='file']{background:unset;border-color:inherit;border-width:0;border-radius:0;padding:0;font-size:unset;line-height:inherit}[type='file']:focus{outline:1px solid ButtonText;outline:1px auto -webkit-focus-ring-color}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.bottom-6{bottom:1.5rem}.left-0{left:0px}.left-3{left:0.75rem}.left-8{left:2rem}.left-\[-4px\]{left:-4px}.right-0{right:0px}.top-0{top:0px}.top-1\/2{top:50%}.top-2{top:0.5rem}.top-24{top:6rem}.z-40{z-index:40}.z-50{z-index:50}.col-span-1{grid-column:span 1 / span 1}.col-span-12{grid-column:span 12 / span 12}.mx-auto{margin-left:auto;margin-right:auto}.-mr-12{margin-right:-3rem}.-mt-12{margin-top:-3rem}.mb-1{margin-bottom:0.25rem}.mb-10{margin-bottom:2.5rem}.mb-2{margin-bottom:0.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.ml-4{margin-left:1rem}.ml-64{margin-left:16rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.mt-auto{margin-top:auto}.line-clamp-2{overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}.flex{display:flex}.grid{display:grid}.h-10{height:2.5rem}.h-16{height:4rem}.h-2{height:0.5rem}.h-20{height:5rem}.h-24{height:6rem}.h-48{height:12rem}.h-64{height:16rem}.h-8{height:2rem}.h-full{height:100%}.w-10{width:2.5rem}.w-2{width:0.5rem}.w-24{width:6rem}.w-64{width:16rem}.w-8{width:2rem}.w-\[72\%\]{width:72%}.w-\[calc\(100\%-256px\)\]{width:calc(100% - 256px)}.w-full{width:100%}.max-w-\[1400px\]{max-width:1400px}.max-w-xl{max-width:36rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.grid-cols-12{grid-template-columns:repeat(12, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-12 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(3rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(3rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-r{border-right-width:1px}.border-r-2{border-right-width:2px}.border-t{border-top-width:1px}.border-on-surface-variant\/20{border-color:rgb(204 195 216 / 0.2)}.border-primary{--tw-border-opacity:1;border-color:rgb(210 187 255 / var(--tw-border-opacity, 1))}.border-primary\/20{border-color:rgb(210 187 255 / 0.2)}.border-white\/10{border-color:rgb(255 255 255 / 0.1)}.border-white\/5{border-color:rgb(255 255 255 / 0.05)}.bg-background{--tw-bg-opacity:1;background-color:rgb(19 19 24 / var(--tw-bg-opacity, 1))}.bg-background\/80{background-color:rgb(19 19 24 / 0.8)}.bg-black\/20{background-color:rgb(0 0 0 / 0.2)}.bg-black\/40{background-color:rgb(0 0 0 / 0.4)}.bg-on-surface-variant\/40{background-color:rgb(204 195 216 / 0.4)}.bg-primary{--tw-bg-opacity:1;background-color:rgb(210 187 255 / var(--tw-bg-opacity, 1))}.bg-primary-container{--tw-bg-opacity:1;background-color:rgb(124 58 237 / var(--tw-bg-opacity, 1))}.bg-primary\/10{background-color:rgb(210 187 255 / 0.1)}.bg-primary\/20{background-color:rgb(210 187 255 / 0.2)}.bg-secondary{--tw-bg-opacity:1;background-color:rgb(173 198 255 / var(--tw-bg-opacity, 1))}.bg-surface\/10{background-color:rgb(19 19 24 / 0.1)}.bg-tertiary\/10{background-color:rgb(78 222 163 / 0.1)}.bg-tertiary\/20{background-color:rgb(78 222 163 / 0.2)}.bg-white\/5{background-color:rgb(255 255 255 / 0.05)}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.bg-gradient-to-t{background-image:linear-gradient(to top, var(--tw-gradient-stops))}.from-background{--tw-gradient-from:#131318 var(--tw-gradient-from-position);--tw-gradient-to:rgb(19 19 24 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-black\/80{--tw-gradient-from:rgb(0 0 0 / 0.8) var(--tw-gradient-from-position);--tw-gradient-to:rgb(0 0 0 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-primary{--tw-gradient-from:#d2bbff var(--tw-gradient-from-position);--tw-gradient-to:rgb(210 187 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.via-background\/40{--tw-gradient-to:rgb(19 19 24 / 0)  var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), rgb(19 19 24 / 0.4) var(--tw-gradient-via-position), var(--tw-gradient-to)}.to-secondary{--tw-gradient-to:#adc6ff var(--tw-gradient-to-position)}.to-transparent{--tw-gradient-to:transparent var(--tw-gradient-to-position)}.bg-cover{background-size:cover}.bg-center{background-position:center}.object-cover{object-fit:cover}.p-1{padding:0.25rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-8{padding-left:2rem;padding-right:2rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pb-16{padding-bottom:4rem}.pl-10{padding-left:2.5rem}.pl-8{padding-left:2rem}.pr-4{padding-right:1rem}.pt-24{padding-top:6rem}.pt-6{padding-top:1.5rem}.font-body-md{font-family:Geist}.font-display{font-family:Geist}.font-headline-md{font-family:Geist}.font-label-md{font-family:Geist}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-body-md{font-size:16px;line-height:1.5;letter-spacing:0em;font-weight:400}.text-display{font-size:48px;line-height:1.1;letter-spacing:-0.04em;font-weight:700}.text-headline-md{font-size:24px;line-height:1.3;letter-spacing:-0.02em;font-weight:600}.text-label-md{font-size:14px;line-height:1.4;letter-spacing:0.02em;font-weight:500}.text-label-sm{font-size:12px;line-height:1;letter-spacing:0.05em;font-weight:600}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.uppercase{text-transform:uppercase}.italic{font-style:italic}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-tighter{letter-spacing:-0.05em}.tracking-widest{letter-spacing:0.1em}.text-on-surface{--tw-text-opacity:1;color:rgb(228 225 233 / var(--tw-text-opacity, 1))}.text-on-surface-variant{--tw-text-opacity:1;color:rgb(204 195 216 / var(--tw-text-opacity, 1))}.text-on-surface-variant\/60{color:rgb(204 195 216 / 0.6)}.text-primary{--tw-text-opacity:1;color:rgb(210 187 255 / var(--tw-text-opacity, 1))}.text-primary\/50{color:rgb(210 187 255 / 0.5)}.text-tertiary{--tw-text-opacity:1;color:rgb(78 222 163 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-0{opacity:0}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-\[0_0_10px_rgba\(210\2c 187\2c 255\2c 0\.4\)\]{--tw-shadow:0 0 10px rgba(210,187,255,0.4);--tw-shadow-colored:0 0 10px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.ring-4{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.ring-primary\/20{--tw-ring-color:rgb(210 187 255 / 0.2)}.ring-secondary\/20{--tw-ring-color:rgb(173 198 255 / 0.2)}.blur-3xl{--tw-blur:blur(64px);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-xl{--tw-backdrop-blur:blur(24px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-200{transition-duration:200ms}.duration-500{transition-duration:500ms}.selection\:bg-primary\/30 *::selection{background-color:rgb(210 187 255 / 0.3)}.selection\:bg-primary\/30::selection{background-color:rgb(210 187 255 / 0.3)}.before\:absolute::before{content:var(--tw-content);position:absolute}.before\:bottom-2::before{content:var(--tw-content);bottom:0.5rem}.before\:left-0::before{content:var(--tw-content);left:0px}.before\:top-2::before{content:var(--tw-content);top:0.5rem}.before\:w-\[1px\]::before{content:var(--tw-content);width:1px}.before\:bg-gradient-to-b::before{content:var(--tw-content);background-image:linear-gradient(to bottom, var(--tw-gradient-stops))}.before\:from-primary::before{content:var(--tw-content);--tw-gradient-from:#d2bbff var(--tw-gradient-from-position);--tw-gradient-to:rgb(210 187 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.before\:via-secondary::before{content:var(--tw-content);--tw-gradient-to:rgb(173 198 255 / 0)  var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), #adc6ff var(--tw-gradient-via-position), var(--tw-gradient-to)}.before\:to-transparent::before{content:var(--tw-content);--tw-gradient-to:transparent var(--tw-gradient-to-position)}.hover\:bg-white\/5:hover{background-color:rgb(255 255 255 / 0.05)}.hover\:text-primary:hover{--tw-text-opacity:1;color:rgb(210 187 255 / var(--tw-text-opacity, 1))}.hover\:underline:hover{-webkit-text-decoration-line:underline;text-decoration-line:underline}.hover\:brightness-110:hover{--tw-brightness:brightness(1.1);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-primary\/50:focus{--tw-ring-color:rgb(210 187 255 / 0.5)}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:translate-x-1{--tw-translate-x:0.25rem;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:scale-110{--tw-scale-x:1.1;--tw-scale-y:1.1;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:scale-125{--tw-scale-x:1.25;--tw-scale-y:1.25;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.group:hover .group-hover\:border-primary{--tw-border-opacity:1;border-color:rgb(210 187 255 / var(--tw-border-opacity, 1))}.group:hover .group-hover\:bg-primary{--tw-bg-opacity:1;background-color:rgb(210 187 255 / var(--tw-bg-opacity, 1))}.group:hover .group-hover\:opacity-100{opacity:1}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:w-32{width:8rem}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}}@media (min-width: 1024px){.lg\:col-span-4{grid-column:span 4 / span 4}.lg\:col-span-8{grid-column:span 8 / span 8}}</style></head>
+
+<body class="bg-background text-on-surface font-body-md selection:bg-primary/30">
+<!-- SideNavBar -->
+<aside class="h-full w-64 fixed left-0 top-0 border-r border-white/10 bg-surface/10 backdrop-blur-xl shadow-2xl flex flex-col py-8 px-4 z-50">
+<div class="mb-10 px-2 flex items-center gap-3">
+<img alt="Game Memory AI Logo" class="w-8 h-8 rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDccGR-B0MK8-zbonZy3OkAAbT70BJK5IMg2WPQRH5rVlg_P6ubRZRBsKfNPTFfgYHH9g1lpqiaWJsFzJZ4l8GeETIv7a4kzvs2pdKNrcI8Z1uQzk4yJElkuC9LbDT_b25qYsPlw2RPspuxu2HWb6JVjU-cIxk_LVR3536uCArli3bfYW-Nh-CfI1F6t7L8IdPM-TAs6HEbCixXXltncosKuO7uTy8ZtzIRdXJBfrnO22jBac71QplCjzme8opRPEdoW2eJB3KPDsA">
+<span class="text-headline-md font-headline-md font-bold text-primary">Game Memory AI</span>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all duration-200 text-on-surface-variant group" href="dashboard.html">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">dashboard</span>
+<span class="text-label-md font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-white/5 transition-all duration-200 active:scale-95" href="my_games.html">
+<span class="material-symbols-outlined">videogame_asset</span>
+<span class="text-label-md font-label-md">My Games</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all duration-200 text-on-surface-variant" href="memories.html">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="text-label-md font-label-md">Memories</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all duration-200 text-on-surface-variant" href="timeline.html">
+<span class="material-symbols-outlined">timeline</span>
+<span class="text-label-md font-label-md">Journey Timeline</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all duration-200 text-on-surface-variant" href="continue_journey.html">
+<span class="material-symbols-outlined">play_arrow</span>
+<span class="text-label-md font-label-md">Continue Journey</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all duration-200 text-on-surface-variant" href="upload_memory.html">
+<span class="material-symbols-outlined">cloud_upload</span>
+<span class="text-label-md font-label-md">Upload Memory</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all duration-200 text-on-surface-variant" href="achievements.html">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="text-label-md font-label-md">Achievements</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 hover:text-primary transition-all duration-200 text-on-surface-variant mt-auto" href="settings.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-md font-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-8 pt-6 border-t border-white/10 flex items-center gap-3 px-2">
+<img alt="User profile photo" class="w-10 h-10 rounded-full border border-primary/20" data-alt="A professional portrait of a tech-savvy gamer with a focused expression, wearing high-end headphones. The lighting is moody with purple and blue rim lighting that complements the dark-mode UI design. The background is a blurred office setup with soft LED light strips." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2PSze0LQFCJXXz8tbtR14ZSnWIr1Uo7Br3SU8GY9aUKsgruQF-CBvVOs1ZLsRvaBl8Zda2CwXuz5lCawEzoWWn28fhGZkE1xVipcCx29JWuaDfeWqy6IsXdiSVGpzG5WimC1Eq2xTFTeerB_DulT-xvyfdbeDFVF9tc_bjMM7tIHfUOASv6hZr0XUX6gEwOsmUh-FsVBGKApSraPvfxmEYtgS9jJe77E3YL97YJW225_hXh_glq7jXEwoR3qqONErdQguPuzcmrQ">
+<div>
+<p class="text-label-md font-label-md font-bold text-on-surface">Pro Gamer Elite</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Active Now</p>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-256px)] h-16 z-40 bg-background/80 backdrop-blur-md border-b border-white/5 flex justify-between items-center px-8">
+<div class="flex items-center w-full max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="w-full bg-black/20 border border-white/10 rounded-full py-1.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 focus:outline-none transition-all" placeholder="Search Elden Ring memories..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:ring-2 focus:ring-primary/50 rounded-full p-1">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3">
+<span class="text-label-md font-label-md text-on-surface-variant">Elden Ring</span>
+<span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-24 px-8 pb-16 max-w-[1400px] mx-auto grid grid-cols-12 gap-8">
+<!-- Left Column: Story & History -->
+<div class="col-span-12 lg:col-span-8 space-y-12">
+<!-- Hero Header Section -->
+<section class="relative h-64 rounded-2xl overflow-hidden glass group">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="An epic cinematic landscape from a dark fantasy RPG similar to Elden Ring. A lone warrior stands on a cliff overlooking a vast, mist-covered valley with a giant glowing golden tree in the distance. The atmosphere is somber and majestic, with deep blues and brilliant gold highlights reflecting the game's core visual theme." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCIzAHr_Zx7gi7E-oSNnRI35PIQAZU_13hKlZX9Rr-Aq_7IORn0LjE5WoCpjF8wUreX-g4_aVLRQZA5w8VprS7LjxYQPk7iL-myms4HMLjeLzzw2TnENLCfiGMsATcc4nW1j9wWxSAIhrAX_Pn4nRTvfTSRtKp8CoeO1hlwdDku30EEhjK2ya3ojVO4R1ziLz3qsgqbr7P6vK78-delc4ziDbz8aK22TIy_N_Qc23_VO7JiPwnYR7iZ1Rvx7fEmZOlgt51ZjoefFQY')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+<div class="absolute bottom-6 left-8">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-primary/20 text-primary text-[10px] font-bold rounded uppercase tracking-tighter">Current Game</span>
+<span class="px-2 py-0.5 bg-tertiary/20 text-tertiary text-[10px] font-bold rounded uppercase tracking-tighter">Live Insight</span>
+</div>
+<h1 class="font-display text-display text-white mb-2">Elden Ring</h1>
+<p class="text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">schedule</span> 142 hours played
+                    </p>
+</div>
+</section>
+<!-- Story Timeline -->
+<section>
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">timeline</span>
+<h2 class="text-headline-md font-headline-md text-on-surface">Story Timeline</h2>
+</div>
+<div class="relative ml-4 space-y-8 before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[1px] before:bg-gradient-to-b before:from-primary before:via-secondary before:to-transparent">
+<!-- Timeline Item -->
+<div class="relative pl-8 group">
+<div class="absolute left-[-4px] top-2 w-2 h-2 rounded-full bg-primary ring-4 ring-primary/20 group-hover:scale-125 transition-transform"></div>
+<div class="glass p-5 rounded-xl glass-hover">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-label-md font-bold text-on-surface">Defeated Margit, the Fell Omen</h3>
+<span class="text-[10px] text-on-surface-variant uppercase">Oct 14, 2023</span>
+</div>
+<p class="text-body-md text-on-surface-variant">First major hurdle cleared at Stormveil gates. AI Note: Your dodge timing improved significantly during the second phase.</p>
+</div>
+</div>
+<!-- Timeline Item -->
+<div class="relative pl-8 group">
+<div class="absolute left-[-4px] top-2 w-2 h-2 rounded-full bg-secondary ring-4 ring-secondary/20 group-hover:scale-125 transition-transform"></div>
+<div class="glass p-5 rounded-xl glass-hover">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-label-md font-bold text-on-surface">Entered Liurnia of the Lakes</h3>
+<span class="text-[10px] text-on-surface-variant uppercase">Oct 18, 2023</span>
+</div>
+<p class="text-body-md text-on-surface-variant">The mist lifted to reveal the Academy of Raya Lucaria. AI recorded a significant increase in exploration duration here.</p>
+</div>
+</div>
+<!-- Timeline Item -->
+<div class="relative pl-8 group">
+<div class="absolute left-[-4px] top-2 w-2 h-2 rounded-full bg-on-surface-variant/40 group-hover:bg-primary transition-colors"></div>
+<div class="glass p-5 rounded-xl glass-hover">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-label-md font-bold text-on-surface">Conquered Starscourge Radahn</h3>
+<span class="text-[10px] text-on-surface-variant uppercase">Nov 2, 2023</span>
+</div>
+<p class="text-body-md text-on-surface-variant">The Festival of War concluded in the Caelid wilds. AI Highlight: The cinematic transition to the underground crater was captured as a core memory.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Memory Cards Grid (Bento Style) -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<h2 class="text-headline-md font-headline-md text-on-surface">Memory Fragments</h2>
+</div>
+<button class="text-label-md text-primary font-bold hover:underline">View Gallery</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<div class="glass rounded-xl overflow-hidden h-48 relative group">
+<div class="glow-point"></div>
+<img alt="Memory Card" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A high-contrast gaming screenshot of a dark, gothic throne room. A menacing figure sits on a stone throne, surrounded by flickering torches casting long, dramatic shadows. The aesthetic is gritty and atmospheric, aligning with a dark-fantasy world-building style. Deep purples and blacks dominate the scene." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_LXCwlsTaQNXocIfmpNIgMS-svM2O0HIuauCgjkypnlcsBe_o6XRL8wWav7UTbjOKI7yuHV3HtYbKLf-4zVLuh7E3cJ2u9oP_InF_Ktbu3jzQCUonOHfG0if96IzY8qPyoyl7HIUgKgaQjAosnf9xN5zfOUKFebNb0Ej864RBBb5jlqnul230KTXVIKeEytG3QBmSDej4OwH0_FtdNTT5jFn2KFiq6DNb58Hu-Tbgtkq5qPPBmURpO2hA5zrNq1SFjQU6NdFBapY">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="text-[10px] text-primary uppercase font-bold">Boss Fight</p>
+<p class="text-label-sm">Malenia Phase 1 Entry</p>
+</div>
+</div>
+<div class="glass rounded-xl overflow-hidden h-48 relative group col-span-1 md:col-span-2">
+<img alt="Memory Card" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A wide panoramic shot of a mystical forest with bioluminescent plants glowing in shades of neon blue and soft violet. A small clearing features a campfire crackling, sending embers into a star-filled sky. The mood is peaceful and enchanting, capturing a moment of respite in a dangerous world. High-quality digital render style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaX7FA1bcYFdhRYVuFApxgv5IKvizChG_SKOZJmc4SM2qB76p2ciTBVmnKk8yQ9Fus7ctzGcAq2y6_paFS4B5ERAxwwTNLkmKU9UUDNPjPs6xqv2ZSLbfOzLxzdzhlkvHpJYtCePIWjtO6nok-LUSHU6NtOx88CcuY_KiSeIcggoXkbrn7x3wvTHA2r68GBsbjE9lGDQSFtK2WwXYlt0LBvbB6U1odwo-lZTjv0hE4Hn_qG6-jG3-ohBG85d-0qZE39efo7tsd_5w">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="text-[10px] text-primary uppercase font-bold">Discovery</p>
+<p class="text-label-sm">Siofra River Night Sky</p>
+</div>
+</div>
+<div class="glass rounded-xl overflow-hidden h-48 relative group">
+<img alt="Memory Card" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="An abstract visualization of digital data flowing through a network, represented as glowing lines of code and geometric pulses in a deep void. This represents the AI's processing of game data. The colors are predominantly electric blue and vibrant purple, creating a sleek, futuristic tech vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2DsVhV53RkVQ521QbQXayXQ8U2KstDWwS36Ega9quOfIKDGKA4NE38JKaCSrKqkO7r5LcLXHJk1gwmEVEbFj7dmTUCyE9gai-uIDGrk3xHuqPM2ZwfSYUezHGYvYHWbIrt6N0A8BWw8ZMZNLPKL5EryM8yfucVD_q31GGd8-rgDQPeVcIDc-sNnRnWoyAbtR3c-MfU7GQ445K3X3jjMs61zEWQCWpntT7lo95KkcVK8UHSbf3hXrdeHh_ZGZGD9YSq4ywcl_N4GI">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="text-[10px] text-primary uppercase font-bold">Insight</p>
+<p class="text-label-sm">Stat Build Analysis</p>
+</div>
+</div>
+<div class="glass rounded-xl overflow-hidden h-48 relative group">
+<img alt="Memory Card" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A close-up of a futuristic console interface displaying complex game statistics, experience bars, and skill trees. The UI elements are sleek, with glass textures and neon accents. The background is a dark, tech-oriented laboratory. It conveys the feeling of high-end performance monitoring and pro-gaming analytics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuLGO_twi_YWLA14iFhnYkcy9KMzYU_x13wXbDxz7Lk3AJwUMEYaDJIH9FgeOTJKLSOGtgiacCUfvEIoiMfzoh5JuSJRZRRANOaBFqFabKJcEfPZLs0nNlkd00_I0Q-2yAV4agW0iQCOw4fiUU0khfLz7XM3HecFkCBZ86MiEuAAR68SOkY0vZKB1zjtsFGgiqU4KgHOxiTriAlGjqz-Em2YibaZs8C87jg_RlZFK5XFFdTYSpCBdOA5QZNwL5xJ5E1D2IxRgiXo4">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="text-[10px] text-primary uppercase font-bold">Archive</p>
+<p class="text-label-sm">Final Build - Level 150</p>
+</div>
+</div>
+<div class="glass rounded-xl overflow-hidden h-48 relative group">
+<img alt="Memory Card" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A cinematic capture of a character in intricate plate armor kneeling before a glowing altar in a crumbling stone cathedral. Sunlight streams through broken stained glass, creating rays of light that illuminate dust motes in the air. The scene is solemn and holy, blending epic fantasy with quiet introspection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGIEohG9rNxbf1XXtF57Xhr4ic1PoCZ98r8giiNfWwWIX8qpjIU-wnsjV5vfbC5pHub1J8ieLtMgFWYYiv4QEey7kh0IpJRz_sOpLssSAX5S3eSTJGBnz_3dcs9Hv7zl1WpDQIWvgWUDDK2rIcVbjBKGZ8Orj3yZwQyaCFJDKBxb7EvEi80jE-Mn4b3ytc9PShY1y_2zwdO0JZ5uDxwoeT5HBHoIGB9A0_zxl1f6r-aj1STPiyh9a1LoHt4eEIJdNHyn-EFcj8_wU">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="text-[10px] text-primary uppercase font-bold">Story</p>
+<p class="text-label-sm">Leyndell Throne Room</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Session History -->
+<section>
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">history</span>
+<h2 class="text-headline-md font-headline-md text-on-surface">Recent Sessions</h2>
+</div>
+<div class="space-y-4">
+<div class="glass p-6 rounded-2xl flex flex-col md:flex-row gap-6 glass-hover">
+<div class="w-full md:w-32 h-20 rounded-lg bg-black/40 flex items-center justify-center border border-white/5 shrink-0">
+<span class="material-symbols-outlined text-3xl text-primary/50">videogame_asset</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-bold text-on-surface">Late Night Exploration: Subterranean Shunning-Grounds</h4>
+<span class="text-xs text-tertiary bg-tertiary/10 px-2 py-0.5 rounded">Efficiency: 88%</span>
+</div>
+<p class="text-sm text-on-surface-variant line-clamp-2">You spent 4 hours navigating the sewers of Leyndell. AI Summary: Notable persistence shown during the Mohg fight attempt. You discovered three hidden passages and collected several high-value upgrade materials.</p>
+<div class="mt-4 flex gap-4">
+<span class="text-[10px] uppercase font-bold text-on-surface-variant/60 flex items-center gap-1"><span class="material-symbols-outlined text-sm">timer</span> 4h 12m</span>
+<span class="text-[10px] uppercase font-bold text-on-surface-variant/60 flex items-center gap-1"><span class="material-symbols-outlined text-sm">skull</span> 12 deaths</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Sticky Sidebar -->
+<div class="col-span-12 lg:col-span-4">
+<div class="sticky top-24 space-y-6">
+<!-- Current Objective Card -->
+<div class="glass p-6 rounded-2xl relative overflow-hidden">
+<div class="glow-point"></div>
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 blur-3xl -mr-12 -mt-12"></div>
+<h3 class="text-[10px] uppercase font-bold text-primary tracking-widest mb-4">Current Objective</h3>
+<p class="text-headline-md font-headline-md text-white mb-4 leading-tight">Find the Three Fingers in the Subterranean Shunning-Grounds.</p>
+<div class="flex items-center gap-2 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span>Leyndell, Royal Capital</span>
+</div>
+</div>
+<!-- Progress Tracker -->
+<div class="glass p-6 rounded-2xl">
+<div class="flex justify-between items-end mb-4">
+<div>
+<h3 class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest mb-1">Story Progress</h3>
+<p class="text-headline-md font-bold text-primary">72%</p>
+</div>
+<span class="text-xs text-on-surface-variant">Estimated 30h left</span>
+</div>
+<div class="w-full h-2 bg-black/40 rounded-full overflow-hidden border border-white/5">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[72%] shadow-[0_0_10px_rgba(210,187,255,0.4)]"></div>
+</div>
+</div>
+<!-- AI Story Summary -->
+<div class="glass p-6 rounded-2xl">
+<h3 class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest mb-4">AI Story Summary</h3>
+<p class="text-body-md text-on-surface-variant italic leading-relaxed">
+                        "After the fall of Morgott, you've reached the foot of the Erdtree only to find it barred by thorns. Melina has guided you toward the Forbidden Lands, but your recent detour into the sewers suggests a growing interest in the Flame of Frenzy. The capital remains silent, but the weight of your choices is beginning to manifest in your interactions with the remaining Finger Readers."
+                    </p>
+</div>
+<!-- Important NPCs -->
+<div class="glass p-6 rounded-2xl">
+<h3 class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest mb-4">Key Characters</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 group-hover:border-primary transition-colors">
+<img alt="Melina" class="w-full h-full object-cover" data-alt="A detailed digital painting of a mysterious woman with long, pale hair and a delicate hooded cloak. She has a soft, ethereal glow about her. The style is reminiscent of high-fantasy character art with intricate fabric textures and subtle magical particles. The lighting is low-key, emphasizing a sense of mystery and destiny." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_tCi6k_bs9OuMB2UncB6OEBTn-GxAmVxo1Hgx9E0iAmx5j_495KGpx1VWDcw4fRCC7AOVdUDW0n4qeFA-O73NMRz4AH2IK0guTvyWyE06dY2iRo4Syx-CiCsK2sLHjURIoT-CPJGogj-p3NbwfYTu9FwHqFdgVfdTfNADmYt90jY7SgsIrsRta6eCP7ZYXV0edyvFw3NbPyBJNg4MjqXgVUB6YiFqBBldFbR3052T9hc9CEHTiwJpzp-B2UG_VtOHvBt_wGZ2vrk">
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface">Melina</p>
+<p class="text-[10px] text-tertiary">Current Companion</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</div>
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-on-surface-variant/20 group-hover:border-primary transition-colors">
+<img alt="Ranni" class="w-full h-full object-cover" data-alt="A stylized portrait of a mystical figure with blue-tinted skin and multiple glowing eyes, wearing an ornate, weathered wide-brimmed hat. The character has a serene yet otherworldly presence. The background is a dark starry night, and the overall color palette is dominated by cold blues and silver." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDblsSN_9SeHg2TcF9V7zXokjA7KVG1BRFHCNX6uNDWdLLK1l_NRf9eOnfpo1Y2Z5yajgXOgr8XiCh_oMw7VEsGQqs9oNO4layTUrwRrwRqi5hFpdjzmNgp3fLMawS3BrqRFJWxwzGmJ3VFtOA56WJYoGTYKVvsY92BGAnD-ZPNxdS00X_aP69XjWEnIF835zmwiP9_wHdzYjWTz_1TegvdcQr3jiyhVK0mIDtcVKxR6-ne6n0-E7MxvreqtTqjy_YVw4WM9RnK9Uk">
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface">Ranni the Witch</p>
+<p class="text-[10px] text-on-surface-variant">Quest Line: Active</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</div>
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-on-surface-variant/20 group-hover:border-primary transition-colors">
+<img alt="Alexander" class="w-full h-full object-cover" data-alt="An artistic rendering of a giant, sentient iron jar decorated with ornate patterns and cracks filled with golden light. It stands proudly in a desert-like landscape. The style is bold and heroic, capturing the quirky but noble nature of the character. High-detail metal textures and dust particles in the air." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJXhhl3pc-xhOMOwCqogs44908hlnEVOqXYqDT_uYRVWXmJX5HM0LumH1iQDP8DcH0OqErbGU2B291ZFJPdJ-_a53UthxBPWxkdSz0aY1cdFfVeKD5g0s5CpgeleKTQbSjsBQWETSMKdy0S6Hd8iPXQoIzVVHCeZh7xZz4CViFLQIC9CmJ9bw3xTF9_HZcBCsSt4_-WPVEsagh3xj21h4AOdTzNoWsLPC-jD-EnQrYLwxQpBoy8c5LVrkVEQ3mqUGRrpAVhpV4xsY">
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface">Iron Fist Alexander</p>
+<p class="text-[10px] text-on-surface-variant">Last seen: Mt. Gelmir</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-primary-container text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-lg hover:brightness-110 active:scale-95 transition-all group">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-weight="fill">play_arrow</span>
+                    Continue Journey
+                </button>
+</div>
+</div>
+</main>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.querySelectorAll('.glass-hover').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+
+</html>

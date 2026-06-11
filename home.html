@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Game Memory AI - Never Forget Your Journey</title>
+  <!-- Material Symbols -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-primary": "#732ee4",
+            "primary": "#d2bbff",
+            "outline": "#958da1",
+            "surface-bright": "#39383e",
+            "background": "#0A0A0F",
+            "primary-fixed-dim": "#d2bbff",
+            "tertiary": "#4edea3",
+            "on-tertiary": "#003824",
+            "on-tertiary-fixed": "#002113",
+            "surface": "#131318",
+            "on-secondary-fixed": "#001a42",
+            "surface-container": "#1f1f25",
+            "on-primary-fixed": "#25005a",
+            "on-surface-variant": "#ccc3d8",
+            "surface-tint": "#d2bbff",
+            "tertiary-container": "#007650",
+            "inverse-surface": "#e4e1e9",
+            "on-secondary-fixed-variant": "#004395",
+            "on-error": "#690005",
+            "surface-container-highest": "#35343a",
+            "secondary-fixed-dim": "#adc6ff",
+            "surface-variant": "#35343a",
+            "on-tertiary-container": "#76ffc2",
+            "inverse-on-surface": "#303036",
+            "error": "#ffb4ab",
+            "on-error-container": "#ffdad6",
+            "surface-dim": "#131318",
+            "on-primary-container": "#ede0ff",
+            "on-background": "#e4e1e9",
+            "on-surface": "#e4e1e9",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-primary": "#3f008e",
+            "primary-fixed": "#eaddff",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-container-high": "#2a292f",
+            "on-primary-fixed-variant": "#5a00c6",
+            "primary-container": "#7c3aed",
+            "surface-container-lowest": "#0e0e13",
+            "on-secondary-container": "#e6ecff",
+            "on-secondary": "#002e6a",
+            "surface-container-low": "#1b1b20",
+            "secondary-container": "#0566d9",
+            "error-container": "#93000a",
+            "secondary-fixed": "#d8e2ff",
+            "secondary": "#adc6ff",
+            "outline-variant": "#4a4455",
+            "on-tertiary-fixed-variant": "#005236"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "20px",
+            "stack-md": "16px",
+            "unit": "8px",
+            "stack-sm": "8px",
+            "container-max-width": "1200px",
+            "margin-desktop": "48px",
+            "gutter": "24px",
+            "stack-lg": "32px"
+          },
+          "fontFamily": {
+            "label-sm": ["Geist"],
+            "headline-lg": ["Geist"],
+            "body-lg": ["Geist"],
+            "headline-md": ["Geist"],
+            "display": ["Geist"],
+            "body-md": ["Geist"],
+            "label-md": ["Geist"],
+            "headline-lg-mobile": ["Geist"]
+          },
+          "fontSize": {
+            "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+            "body-md": ["16px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+          }
+        },
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0A0A0F;
+      color: #e4e1e9;
+      font-family: 'Geist', sans-serif;
+    }
+
+    .glass-surface {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .glass-surface:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .glow-point {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #d2bbff;
+      box-shadow: 0 0 10px #7c3aed;
+    }
+
+    .primary-glow {
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+    }
+
+    .timeline-gradient {
+      background: linear-gradient(180deg, #d2bbff 0%, #7c3aed 100%);
+    }
+
+    .bg-void {
+      background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.15), transparent 40%),
+        radial-gradient(circle at bottom left, rgba(5, 102, 217, 0.15), transparent 40%);
+    }
+  </style>
+  <style>
+    *,
+    ::before,
+    ::after {
+      --tw-border-spacing-x: 0;
+      --tw-border-spacing-y: 0;
+      --tw-translate-x: 0;
+      --tw-translate-y: 0;
+      --tw-rotate: 0;
+      --tw-skew-x: 0;
+      --tw-skew-y: 0;
+      --tw-scale-x: 1;
+      --tw-scale-y: 1;
+      --tw-pan-x: ;
+      --tw-pan-y: ;
+      --tw-pinch-zoom: ;
+      --tw-scroll-snap-strictness: proximity;
+      --tw-gradient-from-position: ;
+      --tw-gradient-via-position: ;
+      --tw-gradient-to-position: ;
+      --tw-ordinal: ;
+      --tw-slashed-zero: ;
+      --tw-numeric-figure: ;
+      --tw-numeric-spacing: ;
+      --tw-numeric-fraction: ;
+      --tw-ring-inset: ;
+      --tw-ring-offset-width: 0px;
+      --tw-ring-offset-color: #fff;
+      --tw-ring-color: rgb(59 130 246 / 0.5);
+      --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-ring-shadow: 0 0 #0000;
+      --tw-shadow: 0 0 #0000;
+      --tw-shadow-colored: 0 0 #0000;
+      --tw-blur: ;
+      --tw-brightness: ;
+      --tw-contrast: ;
+      --tw-grayscale: ;
+      --tw-hue-rotate: ;
+      --tw-invert: ;
+      --tw-saturate: ;
+      --tw-sepia: ;
+      --tw-drop-shadow: ;
+      --tw-backdrop-blur: ;
+      --tw-backdrop-brightness: ;
+      --tw-backdrop-contrast: ;
+      --tw-backdrop-grayscale: ;
+      --tw-backdrop-hue-rotate: ;
+      --tw-backdrop-invert: ;
+      --tw-backdrop-opacity: ;
+      --tw-backdrop-saturate: ;
+      --tw-backdrop-sepia: ;
+      --tw-contain-size: ;
+      --tw-contain-layout: ;
+      --tw-contain-paint: ;
+      --tw-contain-style:
+    }
+
+    ::backdrop {
+      --tw-border-spacing-x: 0;
+      --tw-border-spacing-y: 0;
+      --tw-translate-x: 0;
+      --tw-translate-y: 0;
+      --tw-rotate: 0;
+      --tw-skew-x: 0;
+      --tw-skew-y: 0;
+      --tw-scale-x: 1;
+      --tw-scale-y: 1;
+      --tw-pan-x: ;
+      --tw-pan-y: ;
+      --tw-pinch-zoom: ;
+      --tw-scroll-snap-strictness: proximity;
+      --tw-gradient-from-position: ;
+      --tw-gradient-via-position: ;
+      --tw-gradient-to-position: ;
+      --tw-ordinal: ;
+      --tw-slashed-zero: ;
+      --tw-numeric-figure: ;
+      --tw-numeric-spacing: ;
+      --tw-numeric-fraction: ;
+      --tw-ring-inset: ;
+      --tw-ring-offset-width: 0px;
+      --tw-ring-offset-color: #fff;
+      --tw-ring-color: rgb(59 130 246 / 0.5);
+      --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-ring-shadow: 0 0 #0000;
+      --tw-shadow: 0 0 #0000;
+      --tw-shadow-colored: 0 0 #0000;
+      --tw-blur: ;
+      --tw-brightness: ;
+      --tw-contrast: ;
+      --tw-grayscale: ;
+      --tw-hue-rotate: ;
+      --tw-invert: ;
+      --tw-saturate: ;
+      --tw-sepia: ;
+      --tw-drop-shadow: ;
+      --tw-backdrop-blur: ;
+      --tw-backdrop-brightness: ;
+      --tw-backdrop-contrast: ;
+      --tw-backdrop-grayscale: ;
+      --tw-backdrop-hue-rotate: ;
+      --tw-backdrop-invert: ;
+      --tw-backdrop-opacity: ;
+      --tw-backdrop-saturate: ;
+      --tw-backdrop-sepia: ;
+      --tw-contain-size: ;
+      --tw-contain-layout: ;
+      --tw-contain-paint: ;
+      --tw-contain-style:
+    }
+
+    /* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */
+    *,
+    ::after,
+    ::before {
+      box-sizing: border-box;
+      border-width: 0;
+      border-style: solid;
+      border-color: #e5e7eb
+    }
+
+    ::after,
+    ::before {
+      --tw-content: ''
+    }
+
+    :host,
+    html {
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+      -moz-tab-size: 4;
+      tab-size: 4;
+      font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      font-feature-settings: normal;
+      font-variation-settings: normal;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    body {
+      margin: 0;
+      line-height: inherit
+    }
+
+    hr {
+      height: 0;
+      color: inherit;
+      border-top-width: 1px
+    }
+
+    abbr:where([title]) {
+      -webkit-text-decoration: underline dotted;
+      text-decoration: underline dotted
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-size: inherit;
+      font-weight: inherit
+    }
+
+    a {
+      color: inherit;
+      text-decoration: inherit
+    }
+
+    b,
+    strong {
+      font-weight: bolder
+    }
+
+    code,
+    kbd,
+    pre,
+    samp {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-feature-settings: normal;
+      font-variation-settings: normal;
+      font-size: 1em
+    }
+
+    small {
+      font-size: 80%
+    }
+
+    sub,
+    sup {
+      font-size: 75%;
+      line-height: 0;
+      position: relative;
+      vertical-align: baseline
+    }
+
+    sub {
+      bottom: -.25em
+    }
+
+    sup {
+      top: -.5em
+    }
+
+    table {
+      text-indent: 0;
+      border-color: inherit;
+      border-collapse: collapse
+    }
+
+    button,
+    input,
+    optgroup,
+    select,
+    textarea {
+      font-family: inherit;
+      font-feature-settings: inherit;
+      font-variation-settings: inherit;
+      font-size: 100%;
+      font-weight: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      color: inherit;
+      margin: 0;
+      padding: 0
+    }
+
+    button,
+    select {
+      text-transform: none
+    }
+
+    button,
+    input:where([type=button]),
+    input:where([type=reset]),
+    input:where([type=submit]) {
+      -webkit-appearance: button;
+      background-color: transparent;
+      background-image: none
+    }
+
+    :-moz-focusring {
+      outline: auto
+    }
+
+    :-moz-ui-invalid {
+      box-shadow: none
+    }
+
+    progress {
+      vertical-align: baseline
+    }
+
+    ::-webkit-inner-spin-button,
+    ::-webkit-outer-spin-button {
+      height: auto
+    }
+
+    [type=search] {
+      -webkit-appearance: textfield;
+      outline-offset: -2px
+    }
+
+    ::-webkit-search-decoration {
+      -webkit-appearance: none
+    }
+
+    ::-webkit-file-upload-button {
+      -webkit-appearance: button;
+      font: inherit
+    }
+
+    summary {
+      display: list-item
+    }
+
+    blockquote,
+    dd,
+    dl,
+    figure,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    hr,
+    p,
+    pre {
+      margin: 0
+    }
+
+    fieldset {
+      margin: 0;
+      padding: 0
+    }
+
+    legend {
+      padding: 0
+    }
+
+    menu,
+    ol,
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0
+    }
+
+    dialog {
+      padding: 0
+    }
+
+    textarea {
+      resize: vertical
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      opacity: 1;
+      color: #9ca3af
+    }
+
+    [role=button],
+    button {
+      cursor: pointer
+    }
+
+    :disabled {
+      cursor: default
+    }
+
+    audio,
+    canvas,
+    embed,
+    iframe,
+    img,
+    object,
+    svg,
+    video {
+      display: block;
+      vertical-align: middle
+    }
+
+    img,
+    video {
+      max-width: 100%;
+      height: auto
+    }
+
+    [hidden]:where(:not([hidden=until-found])) {
+      display: none
+    }
+
+    [type='text'],
+    input:where(:not([type])),
+    [type='email'],
+    [type='url'],
+    [type='password'],
+    [type='number'],
+    [type='date'],
+    [type='datetime-local'],
+    [type='month'],
+    [type='search'],
+    [type='tel'],
+    [type='time'],
+    [type='week'],
+    [multiple],
+    textarea,
+    select {
+      -webkit-appearance: none;
+      appearance: none;
+      background-color: #fff;
+      border-color: #6b7280;
+      border-width: 1px;
+      border-radius: 0px;
+      padding-top: 0.5rem;
+      padding-right: 0.75rem;
+      padding-bottom: 0.5rem;
+      padding-left: 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      --tw-shadow: 0 0 #0000;
+    }
+
+    [type='text']:focus,
+    input:where(:not([type])):focus,
+    [type='email']:focus,
+    [type='url']:focus,
+    [type='password']:focus,
+    [type='number']:focus,
+    [type='date']:focus,
+    [type='datetime-local']:focus,
+    [type='month']:focus,
+    [type='search']:focus,
+    [type='tel']:focus,
+    [type='time']:focus,
+    [type='week']:focus,
+    [multiple]:focus,
+    textarea:focus,
+    select:focus {
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      --tw-ring-inset: var(--tw-empty,
+          /*!*/
+          /*!*/
+        );
+      --tw-ring-offset-width: 0px;
+      --tw-ring-offset-color: #fff;
+      --tw-ring-color: #2563eb;
+      --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+      --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+      box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+      border-color: #2563eb
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #6b7280;
+      opacity: 1
+    }
+
+    ::-webkit-datetime-edit-fields-wrapper {
+      padding: 0
+    }
+
+    ::-webkit-date-and-time-value {
+      min-height: 1.5em;
+      text-align: inherit
+    }
+
+    ::-webkit-datetime-edit {
+      display: inline-flex
+    }
+
+    ::-webkit-datetime-edit,
+    ::-webkit-datetime-edit-year-field,
+    ::-webkit-datetime-edit-month-field,
+    ::-webkit-datetime-edit-day-field,
+    ::-webkit-datetime-edit-hour-field,
+    ::-webkit-datetime-edit-minute-field,
+    ::-webkit-datetime-edit-second-field,
+    ::-webkit-datetime-edit-millisecond-field,
+    ::-webkit-datetime-edit-meridiem-field {
+      padding-top: 0;
+      padding-bottom: 0
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+      print-color-adjust: exact
+    }
+
+    [multiple],
+    [size]:where(select:not([size="1"])) {
+      background-image: initial;
+      background-position: initial;
+      background-repeat: unset;
+      background-size: initial;
+      padding-right: 0.75rem;
+      print-color-adjust: unset
+    }
+
+    [type='checkbox'],
+    [type='radio'] {
+      -webkit-appearance: none;
+      appearance: none;
+      padding: 0;
+      print-color-adjust: exact;
+      display: inline-block;
+      vertical-align: middle;
+      background-origin: border-box;
+      -webkit-user-select: none;
+      user-select: none;
+      flex-shrink: 0;
+      height: 1rem;
+      width: 1rem;
+      color: #2563eb;
+      background-color: #fff;
+      border-color: #6b7280;
+      border-width: 1px;
+      --tw-shadow: 0 0 #0000
+    }
+
+    [type='checkbox'] {
+      border-radius: 0px
+    }
+
+    [type='radio'] {
+      border-radius: 100%
+    }
+
+    [type='checkbox']:focus,
+    [type='radio']:focus {
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      --tw-ring-inset: var(--tw-empty,
+          /*!*/
+          /*!*/
+        );
+      --tw-ring-offset-width: 2px;
+      --tw-ring-offset-color: #fff;
+      --tw-ring-color: #2563eb;
+      --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+      --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+      box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)
+    }
+
+    [type='checkbox']:checked,
+    [type='radio']:checked {
+      border-color: transparent;
+      background-color: currentColor;
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat
+    }
+
+    [type='checkbox']:checked {
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    }
+
+    @media (forced-colors: active) {
+      [type='checkbox']:checked {
+        -webkit-appearance: auto;
+        appearance: auto
+      }
+    }
+
+    [type='radio']:checked {
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+    }
+
+    @media (forced-colors: active) {
+      [type='radio']:checked {
+        -webkit-appearance: auto;
+        appearance: auto
+      }
+    }
+
+    [type='checkbox']:checked:hover,
+    [type='checkbox']:checked:focus,
+    [type='radio']:checked:hover,
+    [type='radio']:checked:focus {
+      border-color: transparent;
+      background-color: currentColor
+    }
+
+    [type='checkbox']:indeterminate {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");
+      border-color: transparent;
+      background-color: currentColor;
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    @media (forced-colors: active) {
+      [type='checkbox']:indeterminate {
+        -webkit-appearance: auto;
+        appearance: auto
+      }
+    }
+
+    [type='checkbox']:indeterminate:hover,
+    [type='checkbox']:indeterminate:focus {
+      border-color: transparent;
+      background-color: currentColor
+    }
+
+    [type='file'] {
+      background: unset;
+      border-color: inherit;
+      border-width: 0;
+      border-radius: 0;
+      padding: 0;
+      font-size: unset;
+      line-height: inherit
+    }
+
+    [type='file']:focus {
+      outline: 1px solid ButtonText;
+      outline: 1px auto -webkit-focus-ring-color
+    }
+
+    .fixed {
+      position: fixed
+    }
+
+    .absolute {
+      position: absolute
+    }
+
+    .relative {
+      position: relative
+    }
+
+    .-inset-1 {
+      inset: -0.25rem
+    }
+
+    .bottom-0 {
+      bottom: 0px
+    }
+
+    .left-0 {
+      left: 0px
+    }
+
+    .right-0 {
+      right: 0px
+    }
+
+    .top-0 {
+      top: 0px
+    }
+
+    .top-12 {
+      top: 3rem
+    }
+
+    .z-0 {
+      z-index: 0
+    }
+
+    .z-10 {
+      z-index: 10
+    }
+
+    .z-40 {
+      z-index: 40
+    }
+
+    .z-50 {
+      z-index: 50
+    }
+
+    .col-span-12 {
+      grid-column: span 12 / span 12
+    }
+
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto
+    }
+
+    .mb-1 {
+      margin-bottom: 0.25rem
+    }
+
+    .mb-12 {
+      margin-bottom: 3rem
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem
+    }
+
+    .mb-20 {
+      margin-bottom: 5rem
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem
+    }
+
+    .mb-6 {
+      margin-bottom: 1.5rem
+    }
+
+    .mb-8 {
+      margin-bottom: 2rem
+    }
+
+    .mb-stack-md {
+      margin-bottom: 16px
+    }
+
+    .mt-20 {
+      margin-top: 5rem
+    }
+
+    .mt-3 {
+      margin-top: 0.75rem
+    }
+
+    .mt-4 {
+      margin-top: 1rem
+    }
+
+    .mt-8 {
+      margin-top: 2rem
+    }
+
+    .flex {
+      display: flex
+    }
+
+    .inline-flex {
+      display: inline-flex
+    }
+
+    .grid {
+      display: grid
+    }
+
+    .hidden {
+      display: none
+    }
+
+    .h-10 {
+      height: 2.5rem
+    }
+
+    .h-12 {
+      height: 3rem
+    }
+
+    .h-14 {
+      height: 3.5rem
+    }
+
+    .h-16 {
+      height: 4rem
+    }
+
+    .h-8 {
+      height: 2rem
+    }
+
+    .h-auto {
+      height: auto
+    }
+
+    .h-full {
+      height: 100%
+    }
+
+    .h-px {
+      height: 1px
+    }
+
+    .min-h-\[400px\] {
+      min-height: 400px
+    }
+
+    .min-h-\[85vh\] {
+      min-height: 85vh
+    }
+
+    .min-h-screen {
+      min-height: 100vh
+    }
+
+    .w-1\/2 {
+      width: 50%
+    }
+
+    .w-10 {
+      width: 2.5rem
+    }
+
+    .w-12 {
+      width: 3rem
+    }
+
+    .w-64 {
+      width: 16rem
+    }
+
+    .w-8 {
+      width: 2rem
+    }
+
+    .w-auto {
+      width: auto
+    }
+
+    .w-fit {
+      width: -moz-fit-content;
+      width: fit-content
+    }
+
+    .w-full {
+      width: 100%
+    }
+
+    .max-w-2xl {
+      max-width: 42rem
+    }
+
+    .max-w-4xl {
+      max-width: 56rem
+    }
+
+    .max-w-5xl {
+      max-width: 64rem
+    }
+
+    .max-w-container-max-width {
+      max-width: 1200px
+    }
+
+    .max-w-md {
+      max-width: 28rem
+    }
+
+    .max-w-xl {
+      max-width: 36rem
+    }
+
+    .max-w-xs {
+      max-width: 20rem
+    }
+
+    .flex-1 {
+      flex: 1 1 0%
+    }
+
+    .translate-y-10 {
+      --tw-translate-y: 2.5rem;
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+    }
+
+    .translate-y-0 {
+      --tw-translate-y: 0px;
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+    }
+
+    .scale-95 {
+      --tw-scale-x: .95;
+      --tw-scale-y: .95;
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+    }
+
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr))
+    }
+
+    .grid-cols-12 {
+      grid-template-columns: repeat(12, minmax(0, 1fr))
+    }
+
+    .grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr))
+    }
+
+    .flex-col {
+      flex-direction: column
+    }
+
+    .items-start {
+      align-items: flex-start
+    }
+
+    .items-center {
+      align-items: center
+    }
+
+    .justify-center {
+      justify-content: center
+    }
+
+    .justify-between {
+      justify-content: space-between
+    }
+
+    .gap-12 {
+      gap: 3rem
+    }
+
+    .gap-16 {
+      gap: 4rem
+    }
+
+    .gap-2 {
+      gap: 0.5rem
+    }
+
+    .gap-3 {
+      gap: 0.75rem
+    }
+
+    .gap-4 {
+      gap: 1rem
+    }
+
+    .gap-6 {
+      gap: 1.5rem
+    }
+
+    .gap-gutter {
+      gap: 24px
+    }
+
+    .-space-x-3> :not([hidden])~ :not([hidden]) {
+      --tw-space-x-reverse: 0;
+      margin-right: calc(-0.75rem * var(--tw-space-x-reverse));
+      margin-left: calc(-0.75rem * calc(1 - var(--tw-space-x-reverse)))
+    }
+
+    .space-y-2> :not([hidden])~ :not([hidden]) {
+      --tw-space-y-reverse: 0;
+      margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+      margin-bottom: calc(0.5rem * var(--tw-space-y-reverse))
+    }
+
+    .space-y-4> :not([hidden])~ :not([hidden]) {
+      --tw-space-y-reverse: 0;
+      margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+      margin-bottom: calc(1rem * var(--tw-space-y-reverse))
+    }
+
+    .space-y-6> :not([hidden])~ :not([hidden]) {
+      --tw-space-y-reverse: 0;
+      margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+      margin-bottom: calc(1.5rem * var(--tw-space-y-reverse))
+    }
+
+    .space-y-stack-lg> :not([hidden])~ :not([hidden]) {
+      --tw-space-y-reverse: 0;
+      margin-top: calc(32px * calc(1 - var(--tw-space-y-reverse)));
+      margin-bottom: calc(32px * var(--tw-space-y-reverse))
+    }
+
+    .overflow-hidden {
+      overflow: hidden
+    }
+
+    .overflow-x-hidden {
+      overflow-x: hidden
+    }
+
+    .rounded-2xl {
+      border-radius: 1rem
+    }
+
+    .rounded-3xl {
+      border-radius: 1.5rem
+    }
+
+    .rounded-full {
+      border-radius: 9999px
+    }
+
+    .rounded-lg {
+      border-radius: 0.5rem
+    }
+
+    .rounded-xl {
+      border-radius: 0.75rem
+    }
+
+    .border {
+      border-width: 1px
+    }
+
+    .border-2 {
+      border-width: 2px
+    }
+
+    .border-b {
+      border-bottom-width: 1px
+    }
+
+    .border-l-4 {
+      border-left-width: 4px
+    }
+
+    .border-r {
+      border-right-width: 1px
+    }
+
+    .border-r-2 {
+      border-right-width: 2px
+    }
+
+    .border-t {
+      border-top-width: 1px
+    }
+
+    .border-background {
+      --tw-border-opacity: 1;
+      border-color: rgb(10 10 15 / var(--tw-border-opacity, 1))
+    }
+
+    .border-primary {
+      --tw-border-opacity: 1;
+      border-color: rgb(210 187 255 / var(--tw-border-opacity, 1))
+    }
+
+    .border-primary\/20 {
+      border-color: rgb(210 187 255 / 0.2)
+    }
+
+    .border-primary\/30 {
+      border-color: rgb(210 187 255 / 0.3)
+    }
+
+    .border-white\/10 {
+      border-color: rgb(255 255 255 / 0.1)
+    }
+
+    .border-white\/5 {
+      border-color: rgb(255 255 255 / 0.05)
+    }
+
+    .border-l-primary {
+      --tw-border-opacity: 1;
+      border-left-color: rgb(210 187 255 / var(--tw-border-opacity, 1))
+    }
+
+    .border-l-secondary {
+      --tw-border-opacity: 1;
+      border-left-color: rgb(173 198 255 / var(--tw-border-opacity, 1))
+    }
+
+    .border-l-tertiary {
+      --tw-border-opacity: 1;
+      border-left-color: rgb(78 222 163 / var(--tw-border-opacity, 1))
+    }
+
+    .bg-background {
+      --tw-bg-opacity: 1;
+      background-color: rgb(10 10 15 / var(--tw-bg-opacity, 1))
+    }
+
+    .bg-background\/50 {
+      background-color: rgb(10 10 15 / 0.5)
+    }
+
+    .bg-background\/80 {
+      background-color: rgb(10 10 15 / 0.8)
+    }
+
+    .bg-error-container\/10 {
+      background-color: rgb(147 0 10 / 0.1)
+    }
+
+    .bg-primary {
+      --tw-bg-opacity: 1;
+      background-color: rgb(210 187 255 / var(--tw-bg-opacity, 1))
+    }
+
+    .bg-primary-container {
+      --tw-bg-opacity: 1;
+      background-color: rgb(124 58 237 / var(--tw-bg-opacity, 1))
+    }
+
+    .bg-primary\/10 {
+      background-color: rgb(210 187 255 / 0.1)
+    }
+
+    .bg-secondary-container\/10 {
+      background-color: rgb(5 102 217 / 0.1)
+    }
+
+    .bg-surface {
+      --tw-bg-opacity: 1;
+      background-color: rgb(19 19 24 / var(--tw-bg-opacity, 1))
+    }
+
+    .bg-surface-container-highest {
+      --tw-bg-opacity: 1;
+      background-color: rgb(53 52 58 / var(--tw-bg-opacity, 1))
+    }
+
+    .bg-surface-container-lowest {
+      --tw-bg-opacity: 1;
+      background-color: rgb(14 14 19 / var(--tw-bg-opacity, 1))
+    }
+
+    .bg-surface\/10 {
+      background-color: rgb(19 19 24 / 0.1)
+    }
+
+    .bg-tertiary-container\/10 {
+      background-color: rgb(0 118 80 / 0.1)
+    }
+
+    .bg-tertiary\/10 {
+      background-color: rgb(78 222 163 / 0.1)
+    }
+
+    .bg-white\/5 {
+      background-color: rgb(255 255 255 / 0.05)
+    }
+
+    .bg-gradient-to-r {
+      background-image: linear-gradient(to right, var(--tw-gradient-stops))
+    }
+
+    .from-primary {
+      --tw-gradient-from: #d2bbff var(--tw-gradient-from-position);
+      --tw-gradient-to: rgb(210 187 255 / 0) var(--tw-gradient-to-position);
+      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+    }
+
+    .to-secondary-container {
+      --tw-gradient-to: #0566d9 var(--tw-gradient-to-position)
+    }
+
+    .object-cover {
+      object-fit: cover
+    }
+
+    .p-10 {
+      padding: 2.5rem
+    }
+
+    .p-2 {
+      padding: 0.5rem
+    }
+
+    .p-3 {
+      padding: 0.75rem
+    }
+
+    .p-6 {
+      padding: 1.5rem
+    }
+
+    .p-8 {
+      padding: 2rem
+    }
+
+    .px-10 {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem
+    }
+
+    .px-2 {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem
+    }
+
+    .px-3 {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem
+    }
+
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem
+    }
+
+    .px-6 {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem
+    }
+
+    .px-8 {
+      padding-left: 2rem;
+      padding-right: 2rem
+    }
+
+    .py-1 {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem
+    }
+
+    .py-20 {
+      padding-top: 5rem;
+      padding-bottom: 5rem
+    }
+
+    .py-24 {
+      padding-top: 6rem;
+      padding-bottom: 6rem
+    }
+
+    .py-3 {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem
+    }
+
+    .py-32 {
+      padding-top: 8rem;
+      padding-bottom: 8rem
+    }
+
+    .py-4 {
+      padding-top: 1rem;
+      padding-bottom: 1rem
+    }
+
+    .py-8 {
+      padding-top: 2rem;
+      padding-bottom: 2rem
+    }
+
+    .pt-16 {
+      padding-top: 4rem
+    }
+
+    .pt-8 {
+      padding-top: 2rem
+    }
+
+    .pt-stack-md {
+      padding-top: 16px
+    }
+
+    .text-center {
+      text-align: center
+    }
+
+    .font-body-lg {
+      font-family: Geist
+    }
+
+    .font-body-md {
+      font-family: Geist
+    }
+
+    .font-display {
+      font-family: Geist
+    }
+
+    .font-headline-lg {
+      font-family: Geist
+    }
+
+    .font-headline-md {
+      font-family: Geist
+    }
+
+    .font-label-md {
+      font-family: Geist
+    }
+
+    .text-\[10px\] {
+      font-size: 10px
+    }
+
+    .text-\[12px\] {
+      font-size: 12px
+    }
+
+    .text-\[32px\] {
+      font-size: 32px
+    }
+
+    .text-\[40px\] {
+      font-size: 40px
+    }
+
+    .text-body-lg {
+      font-size: 18px;
+      line-height: 1.6;
+      letter-spacing: 0em;
+      font-weight: 400
+    }
+
+    .text-display {
+      font-size: 48px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      font-weight: 700
+    }
+
+    .text-headline-lg {
+      font-size: 32px;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      font-weight: 600
+    }
+
+    .text-headline-md {
+      font-size: 24px;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      font-weight: 600
+    }
+
+    .text-label-md {
+      font-size: 14px;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+      font-weight: 500
+    }
+
+    .text-label-sm {
+      font-size: 12px;
+      line-height: 1;
+      letter-spacing: 0.05em;
+      font-weight: 600
+    }
+
+    .font-bold {
+      font-weight: 700
+    }
+
+    .font-medium {
+      font-weight: 500
+    }
+
+    .uppercase {
+      text-transform: uppercase
+    }
+
+    .italic {
+      font-style: italic
+    }
+
+    .leading-none {
+      line-height: 1
+    }
+
+    .leading-tight {
+      line-height: 1.25
+    }
+
+    .tracking-tight {
+      letter-spacing: -0.025em
+    }
+
+    .tracking-widest {
+      letter-spacing: 0.1em
+    }
+
+    .text-error {
+      --tw-text-opacity: 1;
+      color: rgb(255 180 171 / var(--tw-text-opacity, 1))
+    }
+
+    .text-on-background {
+      --tw-text-opacity: 1;
+      color: rgb(228 225 233 / var(--tw-text-opacity, 1))
+    }
+
+    .text-on-primary {
+      --tw-text-opacity: 1;
+      color: rgb(63 0 142 / var(--tw-text-opacity, 1))
+    }
+
+    .text-on-primary-container {
+      --tw-text-opacity: 1;
+      color: rgb(237 224 255 / var(--tw-text-opacity, 1))
+    }
+
+    .text-on-surface-variant {
+      --tw-text-opacity: 1;
+      color: rgb(204 195 216 / var(--tw-text-opacity, 1))
+    }
+
+    .text-outline {
+      --tw-text-opacity: 1;
+      color: rgb(149 141 161 / var(--tw-text-opacity, 1))
+    }
+
+    .text-primary {
+      --tw-text-opacity: 1;
+      color: rgb(210 187 255 / var(--tw-text-opacity, 1))
+    }
+
+    .text-secondary {
+      --tw-text-opacity: 1;
+      color: rgb(173 198 255 / var(--tw-text-opacity, 1))
+    }
+
+    .text-tertiary {
+      --tw-text-opacity: 1;
+      color: rgb(78 222 163 / var(--tw-text-opacity, 1))
+    }
+
+    .opacity-20 {
+      opacity: 0.2
+    }
+
+    .opacity-40 {
+      opacity: 0.4
+    }
+
+    .opacity-50 {
+      opacity: 0.5
+    }
+
+    .opacity-60 {
+      opacity: 0.6
+    }
+
+    .opacity-70 {
+      opacity: 0.7
+    }
+
+    .opacity-80 {
+      opacity: 0.8
+    }
+
+    .opacity-0 {
+      opacity: 0
+    }
+
+    .opacity-100 {
+      opacity: 1
+    }
+
+    .shadow-lg {
+      --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+      box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+    }
+
+    .shadow-primary\/20 {
+      --tw-shadow-color: rgb(210 187 255 / 0.2);
+      --tw-shadow: var(--tw-shadow-colored)
+    }
+
+    .blur-2xl {
+      --tw-blur: blur(40px);
+      filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+    }
+
+    .grayscale-\[20\%\] {
+      --tw-grayscale: grayscale(20%);
+      filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+    }
+
+    .backdrop-blur-md {
+      --tw-backdrop-blur: blur(12px);
+      -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+      backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)
+    }
+
+    .backdrop-blur-xl {
+      --tw-backdrop-blur: blur(24px);
+      -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+      backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)
+    }
+
+    .transition-all {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms
+    }
+
+    .transition-colors {
+      transition-property: color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms
+    }
+
+    .transition-transform {
+      transition-property: transform;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms
+    }
+
+    .duration-700 {
+      transition-duration: 700ms
+    }
+
+    .selection\:bg-primary *::selection {
+      --tw-bg-opacity: 1;
+      background-color: rgb(210 187 255 / var(--tw-bg-opacity, 1))
+    }
+
+    .selection\:text-on-primary *::selection {
+      --tw-text-opacity: 1;
+      color: rgb(63 0 142 / var(--tw-text-opacity, 1))
+    }
+
+    .selection\:bg-primary::selection {
+      --tw-bg-opacity: 1;
+      background-color: rgb(210 187 255 / var(--tw-bg-opacity, 1))
+    }
+
+    .selection\:text-on-primary::selection {
+      --tw-text-opacity: 1;
+      color: rgb(63 0 142 / var(--tw-text-opacity, 1))
+    }
+
+    .hover\:translate-x-2:hover {
+      --tw-translate-x: 0.5rem;
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+    }
+
+    .hover\:scale-105:hover {
+      --tw-scale-x: 1.05;
+      --tw-scale-y: 1.05;
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+    }
+
+    .hover\:bg-white\/10:hover {
+      background-color: rgb(255 255 255 / 0.1)
+    }
+
+    .hover\:bg-white\/5:hover {
+      background-color: rgb(255 255 255 / 0.05)
+    }
+
+    .hover\:text-primary:hover {
+      --tw-text-opacity: 1;
+      color: rgb(210 187 255 / var(--tw-text-opacity, 1))
+    }
+
+    .hover\:grayscale-0:hover {
+      --tw-grayscale: grayscale(0);
+      filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)
+    }
+
+    .active\:scale-95:active {
+      --tw-scale-x: .95;
+      --tw-scale-y: .95;
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+    }
+
+    .group:hover .group-hover\:scale-110 {
+      --tw-scale-x: 1.1;
+      --tw-scale-y: 1.1;
+      transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+    }
+
+    @media (min-width: 640px) {
+      .sm\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+      }
+
+      .sm\:flex-row {
+        flex-direction: row
+      }
+    }
+
+    @media (min-width: 768px) {
+      .md\:ml-64 {
+        margin-left: 16rem
+      }
+
+      .md\:flex {
+        display: flex
+      }
+
+      .md\:w-\[calc\(100\%-256px\)\] {
+        width: calc(100% - 256px)
+      }
+
+      .md\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr))
+      }
+
+      .md\:flex-row {
+        flex-direction: row
+      }
+
+      .md\:px-margin-desktop {
+        padding-left: 48px;
+        padding-right: 48px
+      }
+
+      .md\:text-\[84px\] {
+        font-size: 84px
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .lg\:col-span-4 {
+        grid-column: span 4 / span 4
+      }
+
+      .lg\:col-span-8 {
+        grid-column: span 8 / span 8
+      }
+
+      .lg\:block {
+        display: block
+      }
+
+      .lg\:grid-cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr))
+      }
+    }
+  </style>
+</head>
+
+
+<body class="selection:bg-primary selection:text-on-primary">
+  <!-- TopNavBar Implementation -->
+  <header
+    class="fixed top-0 right-0 w-full md:w-[calc(100%-256px)] h-16 z-40 bg-background/80 backdrop-blur-md border-b border-white/5 flex justify-between items-center px-8">
+    <div class="flex items-center gap-4">
+      <img alt="Game Memory AI Logo" class="h-8 w-auto"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDccGR-B0MK8-zbonZy3OkAAbT70BJK5IMg2WPQRH5rVlg_P6ubRZRBsKfNPTFfgYHH9g1lpqiaWJsFzJZ4l8GeETIv7a4kzvs2pdKNrcI8Z1uQzk4yJElkuC9LbDT_b25qYsPlw2RPspuxu2HWb6JVjU-cIxk_LVR3536uCArli3bfYW-Nh-CfI1F6t7L8IdPM-TAs6HEbCixXXltncosKuO7uTy8ZtzIRdXJBfrnO22jBac71QplCjzme8opRPEdoW2eJB3KPDsA">
+      <span class="text-headline-md font-headline-md font-bold text-primary">Game Memory AI</span>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="hidden md:flex gap-4">
+        <button
+          class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+        <button
+          class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">account_circle</button>
+      </div>
+      <div class="h-8 w-8 rounded-full overflow-hidden border border-white/10">
+        <img alt="User avatar" class="w-full h-full object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZnTAt1lAXhW9mlqf4VcUFVG6V0gKBco9-SM3V-BPS-FhdXe2mjJU4UQw3fanoQdQd-5ATycGcSEOfyiRtIihOFjuNK6dhqle8tl5iKvz_qOZUX-s1KELiFHHfvHafGmnyRSILQ9v31o2FqblgaBCKcneJPir6zlH4yEE9_nTr5CqDr6DdZGjUqpJ7qlZxKCFMi1jKlbHGEOgsJwfAXsmd00XIkos4YDPnF_ulCDMFnSLoI999f5ZFAp-6-sWJUJWiv1XrLrzxQ_0">
+      </div>
+    </div>
+  </header>
+  <!-- SideNavBar Implementation (Desktop Only) -->
+  <aside
+    class="hidden md:flex h-full w-64 fixed left-0 top-0 border-r border-white/10 bg-surface/10 backdrop-blur-xl flex-col py-8 px-4 z-50">
+    <div class="flex flex-col mb-12 px-2">
+      <div class="text-headline-md font-headline-md font-bold text-primary mb-1">Game Memory AI</div>
+      <div class="text-label-md font-label-md text-on-surface-variant">Pro Gamer Elite</div>
+    </div>
+    <nav class="flex-1 space-y-2">
+      <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-primary font-bold border-r-2 border-primary bg-white/5 scale-95 transition-all"
+        href="dashboard.html">
+        <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+        <span class="text-label-md font-label-md">Dashboard</span>
+      </a>
+      <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all group"
+        href="my_games.html">
+        <span class="material-symbols-outlined group-hover:scale-110 transition-transform"
+          data-icon="videogame_asset">videogame_asset</span>
+        <span class="text-label-md font-label-md">My Games</span>
+      </a>
+      <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all group"
+        href="memories.html">
+        <span class="material-symbols-outlined group-hover:scale-110 transition-transform"
+          data-icon="auto_awesome">auto_awesome</span>
+        <span class="text-label-md font-label-md">Memories</span>
+      </a>
+      <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all group"
+        href="timeline.html">
+        <span class="material-symbols-outlined group-hover:scale-110 transition-transform"
+          data-icon="timeline">timeline</span>
+        <span class="text-label-md font-label-md">Journey Timeline</span>
+      </a>
+      <div class="py-4 px-4 border-t border-white/5 mt-4">
+        <span class="text-[10px] uppercase tracking-widest text-outline">Actions</span>
+      </div>
+      <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all group"
+        href="continue_journey.html">
+        <span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
+        <span class="text-label-md font-label-md">Continue Journey</span>
+      </a>
+      <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-on-surface-variant hover:bg-white/5 hover:text-primary transition-all group"
+        href="upload_memory.html">
+        <span class="material-symbols-outlined" data-icon="cloud_upload">cloud_upload</span>
+        <span class="text-label-md font-label-md">Upload Memory</span>
+      </a>
+    </nav>
+    <div class="pt-8 border-t border-white/5">
+      <a class="flex items-center gap-3 py-3 px-4 rounded-lg text-on-surface-variant hover:bg-white/5 transition-all group"
+        href="settings.html">
+        <span class="material-symbols-outlined" data-icon="settings">settings</span>
+        <span class="text-label-md font-label-md">Settings</span>
+      </a>
+    </div>
+  </aside>
+  <!-- Main Canvas Content -->
+  <main class="md:ml-64 pt-16 min-h-screen bg-void overflow-x-hidden">
+    <!-- Hero Section -->
+    <section
+      class="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-6 md:px-margin-desktop overflow-hidden">
+      <!-- Background Animation Placeholder -->
+
+      <div class="relative z-10 max-w-4xl space-y-stack-lg">
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-label-sm uppercase mb-stack-md">
+          <span class="glow-point"></span>
+          AI Companion Live
+        </div>
+        <h1 class="font-display text-display md:text-[84px] leading-tight text-on-background max-w-4xl tracking-tight">
+          Never Forget Your <span class="text-primary italic">Journey</span>
+        </h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto opacity-80">
+          AI remembers every quest, character and decision so you can continue exactly where you left off, even years
+          later.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-gutter justify-center items-center pt-stack-md">
+          <button
+            class="h-14 px-10 bg-primary-container text-on-primary-container font-label-md rounded-xl primary-glow hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+            <span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+            Continue Journey
+          </button>
+          <button
+            class="h-14 px-10 border border-white/10 bg-white/5 backdrop-blur-md font-label-md rounded-xl hover:bg-white/10 active:scale-95 transition-all flex items-center gap-2">
+            <span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+            Add New Memory
+          </button>
+        </div>
+      </div>
+      <!-- Visual Anchor -->
+      <div class="mt-20 w-full max-w-5xl relative">
+        <div
+          class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary-container rounded-2xl blur-2xl opacity-20">
+        </div>
+        <div class="glass-surface p-2 rounded-2xl transition-all duration-700 opacity-100 translate-y-0">
+          <img class="w-full h-auto rounded-xl grayscale-[20%] hover:grayscale-0 transition-all duration-700"
+            data-alt="A high-fidelity cinematic screen capture of an expansive open-world fantasy RPG environment. The scene shows a character standing on a cliff edge overlooking a misty, bioluminescent forest under a starry nebula sky. The UI overlay is translucent, showing AI-identified objectives and character relationship markers in a sophisticated purple and blue aesthetic. The atmosphere is immersive, epic, and highly detailed."
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtPrsS_Ys2E6xOKfTW5a9vkfjS7I-MX6XYtgQ9ksmFOGfd6m_IQ-r9eZbg6D5692usGMpQu7hJ7yOo7GEuNW_7YGl-jcgN00Q1Tjh6kNAsvPDetfp2ciHB4gb2RgjUOj-ZOHyWm2U_VAMgwKu-8Jqxsrt9YPECCfAa489OIdaSoQMxh1k_qxb-lL4FdmetP1idR8KgDGly4Zy7dSDw4YO8AfQefAuG4nxbfrVedu3CJrVxoe40dAnHcsjAb7HtE4CQuBCSno3fc_c">
+        </div>
+      </div>
+    </section>
+    <!-- Stats Section -->
+    <section class="py-24 px-6 md:px-margin-desktop bg-background/50">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+        <!-- Stat Card 1 -->
+        <div
+          class="glass-surface p-8 rounded-2xl flex flex-col items-center justify-center text-center group opacity-0 translate-y-10 transition-all duration-700">
+          <div class="p-3 bg-primary/10 rounded-xl mb-4 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-primary" data-icon="save">save</span>
+          </div>
+          <div class="text-[40px] font-bold text-on-background leading-none mb-2">1,284</div>
+          <div class="text-label-md text-on-surface-variant font-medium">Memories Saved</div>
+        </div>
+        <!-- Stat Card 2 -->
+        <div
+          class="glass-surface p-8 rounded-2xl flex flex-col items-center justify-center text-center group opacity-0 translate-y-10 transition-all duration-700">
+          <div class="p-3 bg-secondary-container/10 rounded-xl mb-4 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-secondary" data-icon="assignment">assignment</span>
+          </div>
+          <div class="text-[40px] font-bold text-on-background leading-none mb-2">156</div>
+          <div class="text-label-md text-on-surface-variant font-medium">Main Quests Remembered</div>
+        </div>
+        <!-- Stat Card 3 -->
+        <div
+          class="glass-surface p-8 rounded-2xl flex flex-col items-center justify-center text-center group opacity-0 translate-y-10 transition-all duration-700">
+          <div class="p-3 bg-tertiary-container/10 rounded-xl mb-4 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-tertiary" data-icon="groups">groups</span>
+          </div>
+          <div class="text-[40px] font-bold text-on-background leading-none mb-2">842</div>
+          <div class="text-label-md text-on-surface-variant font-medium">Characters Tracked</div>
+        </div>
+        <!-- Stat Card 4 -->
+        <div
+          class="glass-surface p-8 rounded-2xl flex flex-col items-center justify-center text-center group opacity-0 translate-y-10 transition-all duration-700">
+          <div class="p-3 bg-error-container/10 rounded-xl mb-4 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-error" data-icon="schedule">schedule</span>
+          </div>
+          <div class="text-[40px] font-bold text-on-background leading-none mb-2">3</div>
+          <div class="text-label-md text-on-surface-variant font-medium">Days Since Last Session</div>
+        </div>
+      </div>
+    </section>
+    <!-- Process Section -->
+    <section class="py-32 px-6 md:px-margin-desktop relative overflow-hidden">
+      <div class="max-w-xl mb-20">
+        <h2 class="font-headline-lg text-headline-lg text-on-background mb-4">The Intelligent Lifecycle</h2>
+        <p class="text-on-surface-variant font-body-md opacity-70">Our proprietary neural engine decodes your playstyle
+          to create a living record of your digital self.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 relative">
+        <!-- Connecting Line for timeline -->
+        <div class="hidden lg:block absolute top-12 left-0 right-0 h-px timeline-gradient opacity-20 z-0"></div>
+        <!-- Step 1 -->
+        <div class="relative z-10 space-y-6">
+          <div
+            class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold shadow-lg shadow-primary/20">
+            1</div>
+          <div
+            class="glass-surface p-6 rounded-2xl border-l-4 border-l-primary opacity-0 translate-y-10 transition-all duration-700">
+            <div class="material-symbols-outlined text-primary mb-4 text-[32px]" data-icon="upload_file">upload_file
+            </div>
+            <h3 class="font-headline-md text-headline-md text-on-background mb-2">Upload Screenshot</h3>
+            <p class="text-label-md text-on-surface-variant">Simply drag gameplay caps. Our AI extracts context from
+              your current screen.</p>
+          </div>
+        </div>
+        <!-- Step 2 -->
+        <div class="relative z-10 space-y-6">
+          <div
+            class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-primary font-bold border border-primary/30">
+            2</div>
+          <div
+            class="glass-surface p-6 rounded-2xl border-l-4 border-l-secondary opacity-0 translate-y-10 transition-all duration-700">
+            <div class="material-symbols-outlined text-secondary mb-4 text-[32px]" data-icon="psychology">psychology
+            </div>
+            <h3 class="font-headline-md text-headline-md text-on-background mb-2">AI Contextual Analysis</h3>
+            <p class="text-label-md text-on-surface-variant">Neural analysis of story arcs, character motivations, and
+              current objectives.</p>
+          </div>
+        </div>
+        <!-- Step 3 -->
+        <div class="relative z-10 space-y-6">
+          <div
+            class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-primary font-bold border border-primary/30">
+            3</div>
+          <div
+            class="glass-surface p-6 rounded-2xl border-l-4 border-l-tertiary opacity-0 translate-y-10 transition-all duration-700">
+            <div class="material-symbols-outlined text-tertiary mb-4 text-[32px]" data-icon="auto_awesome_motion">
+              auto_awesome_motion</div>
+            <h3 class="font-headline-md text-headline-md text-on-background mb-2">Memory Is Saved</h3>
+            <p class="text-label-md text-on-surface-variant">A structured, searchable timeline of your adventure is
+              generated automatically.</p>
+          </div>
+        </div>
+        <!-- Step 4 -->
+        <div class="relative z-10 space-y-6">
+          <div
+            class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-primary font-bold border border-primary/30">
+            4</div>
+          <div
+            class="glass-surface p-6 rounded-2xl border-l-4 border-l-primary opacity-0 translate-y-10 transition-all duration-700">
+            <div class="material-symbols-outlined text-primary mb-4 text-[32px]" data-icon="history_edu">history_edu
+            </div>
+            <h3 class="font-headline-md text-headline-md text-on-background mb-2">Continue Anytime</h3>
+            <p class="text-label-md text-on-surface-variant">Pick up exactly where you left off, with an AI summary to
+              refresh your mind.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Bento Grid Highlight Section -->
+    <section class="py-32 px-6 md:px-margin-desktop bg-surface-container-lowest">
+      <div class="grid grid-cols-12 gap-gutter max-w-container-max-width mx-auto">
+        <div
+          class="col-span-12 lg:col-span-8 glass-surface rounded-3xl p-10 overflow-hidden relative min-h-[400px] opacity-0 translate-y-10 transition-all duration-700">
+          <div class="relative z-10 max-w-md">
+            <h2 class="font-headline-lg text-headline-lg text-on-background mb-6">Interactive Timeline</h2>
+            <p class="text-on-surface-variant mb-8 font-body-md">Visualize your journey through space and time. Our AI
+              maps your decisions onto a branching narrative graph.</p>
+            <button class="text-primary flex items-center gap-2 font-label-md hover:translate-x-2 transition-transform">
+              Explore Narrative Graphs
+              <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+            </button>
+          </div>
+          <div class="absolute right-0 bottom-0 top-0 w-1/2 opacity-40">
+
+          </div>
+        </div>
+        <div
+          class="col-span-12 lg:col-span-4 glass-surface rounded-3xl p-10 flex flex-col justify-between opacity-0 translate-y-10 transition-all duration-700">
+          <div>
+            <div class="p-3 bg-tertiary/10 rounded-xl w-fit mb-6">
+              <span class="material-symbols-outlined text-tertiary" data-icon="security">security</span>
+            </div>
+            <h3 class="font-headline-md text-headline-md text-on-background mb-4">Zero-Knowledge Storage</h3>
+            <p class="text-on-surface-variant text-label-md">Your memories are encrypted locally. We don't see your
+              data, our AI only processes it to help you.</p>
+          </div>
+          <div class="mt-8 pt-8 border-t border-white/5">
+            <div class="flex -space-x-3">
+              <img alt="User feedback 1" class="w-10 h-10 rounded-full border-2 border-background"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6zj9WMq1el9CjSMOgCCeOMfnpQnps8Fqo8gC2wxWgLFJPAhk2mDsRgdUzeMcuF0GjcqAbzokjzvdLBR_0lwp3zrbG5CY63_WpB7h6juj4vgqiEV8ST2kkEp8ax_-z_lEY5wFXuuAyoCJJ64yI4Rwjc09Q_l-ycE03gbCaaKOVuZaT90FoW4aMcyOdM5kLeDqlcWI0D1NYJbipj27O4oXsnkEnjyjQfhIlXEaaDQ-_03HICfytGT3EcuTHJhWzAjne2mPBSdKPc0I">
+              <img alt="User feedback 2" class="w-10 h-10 rounded-full border-2 border-background"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXhQCFuBvTfZ0Y9vDXjO17gl_rZArQuIap69PrYRrdF2tkflbhTAWm4H4xJ0a1omtLeynhe2KU9Z_FBehSc36P0A-25DjVH1bweTpz_ZQ7-99fKLfai-oiAHsLf5RLnEFAnUixm429NsELtvLWOb5SkJTfwN6kw_QbqZ54pV4J7b-xaB0TlVAlQHUrwtDi01VqwU2rFFQSJZAO5g1qX_FVcyRYFXul6SWg0cqTgvc3seMGTPf25QJzZoEeQZykqmfAI6vvm45bblI">
+              <img alt="User feedback 3" class="w-10 h-10 rounded-full border-2 border-background"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDroOQs39sgisMOQqLpKhtOduolhYVArG_uDWM8BOFhRkiLCNC_EYB5cj6eb0ZeaxIV8d1m5esi0xRBGBKrNjKTNU4RdbkMYSILb5w0JUF5i73yAzsfNZGeIyyBbq9W_0Vi-jy0jTHelnFLniwJH1axS0ANapGkoGsv6UEqo_OFqHXL7CCc914dY35ENJrv0oqC5z6dw8V5rAo9JBj6ju5Z2hsNjGXZqOQn-Ce6JDYMLdVaZDc0KK8-_uM_AG5MjvChTrQmlBGcqSw">
+              <div
+                class="w-10 h-10 rounded-full border-2 border-background bg-surface flex items-center justify-center text-[10px] text-outline font-bold">
+                +2k</div>
+            </div>
+            <p class="text-[12px] text-on-surface-variant mt-3 italic">"The context refresh saved my 200hr RPG save."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="py-20 px-6 md:px-margin-desktop border-t border-white/5 bg-background">
+      <div class="max-w-container-max-width mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+        <div class="max-w-xs space-y-6">
+          <div class="flex items-center gap-3">
+            <img alt="Logo" class="h-8"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDccGR-B0MK8-zbonZy3OkAAbT70BJK5IMg2WPQRH5rVlg_P6ubRZRBsKfNPTFfgYHH9g1lpqiaWJsFzJZ4l8GeETIv7a4kzvs2pdKNrcI8Z1uQzk4yJElkuC9LbDT_b25qYsPlw2RPspuxu2HWb6JVjU-cIxk_LVR3536uCArli3bfYW-Nh-CfI1F6t7L8IdPM-TAs6HEbCixXXltncosKuO7uTy8ZtzIRdXJBfrnO22jBac71QplCjzme8opRPEdoW2eJB3KPDsA">
+            <span class="text-headline-md font-bold text-primary">Game Memory AI</span>
+          </div>
+          <p class="text-on-surface-variant text-label-md opacity-60">
+            Pioneering the future of digital memory and interactive storytelling through advanced context extraction.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-16">
+          <div class="space-y-4">
+            <h4 class="text-on-background font-bold text-label-md">Platform</h4>
+            <ul class="space-y-2 text-on-surface-variant text-label-md">
+              <li><a class="hover:text-primary transition-colors" href="#">Dashboard</a></li>
+              <li><a class="hover:text-primary transition-colors" href="#">My Games</a></li>
+              <li><a class="hover:text-primary transition-colors" href="#">Integrations</a></li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <h4 class="text-on-background font-bold text-label-md">Resources</h4>
+            <ul class="space-y-2 text-on-surface-variant text-label-md">
+              <li><a class="hover:text-primary transition-colors" href="#">Documentation</a></li>
+              <li><a class="hover:text-primary transition-colors" href="#">API Status</a></li>
+              <li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <h4 class="text-on-background font-bold text-label-md">Legal</h4>
+            <ul class="space-y-2 text-on-surface-variant text-label-md">
+              <li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+              <li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+              <li><a class="hover:text-primary transition-colors" href="#">Security</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div
+        class="max-w-container-max-width mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="text-label-sm text-on-surface-variant opacity-50">
+          © 2024 Game Memory AI. All rights reserved. Built for champions.
+        </div>
+        <div class="flex gap-6">
+          <a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span
+              class="material-symbols-outlined" data-icon="share">share</span></a>
+          <a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span
+              class="material-symbols-outlined" data-icon="public">public</span></a>
+        </div>
+      </div>
+    </footer>
+  </main>
+  <script>
+    // Micro-interaction: Active state logic for nav
+    const navLinks = document.querySelectorAll('nav a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.forEach(l => {
+          l.classList.remove('text-primary', 'font-bold', 'border-r-2', 'border-primary', 'bg-white/5', 'scale-95');
+          l.classList.add('text-on-surface-variant');
+        });
+        link.classList.remove('text-on-surface-variant');
+        link.classList.add('text-primary', 'font-bold', 'border-r-2', 'border-primary', 'bg-white/5', 'scale-95');
+      });
+    });
+
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-10');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.glass-surface').forEach(card => {
+      card.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700');
+      observer.observe(card);
+    });
+  </script>
+</body>
+
+
+
+</html>
