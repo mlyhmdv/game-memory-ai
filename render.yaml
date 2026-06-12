@@ -1,5 +1,5 @@
 services:
-  # Backend — FastAPI (Тут план free нужен, иначе выберет Starter за $7)
+  # Backend — FastAPI
   - type: web
     name: game-memory-backend
     runtime: python
@@ -19,9 +19,10 @@ services:
       - key: CORS_ORIGINS
         value: '["https://game-memory-ai.onrender.com"]'
 
-  # Frontend — Static HTML (Поменяли тип на static, поле plan полностью убрали)
-  - type: static
+  # Frontend — Static HTML
+  - type: web
     name: game-memory-frontend
+    runtime: static
     staticPublishPath: .
     headers:
       - path: /*
@@ -29,7 +30,6 @@ services:
         value: no-cache
 
 databases:
-  # Database — PostgreSQL (Тут план free нужен, иначе выберет Basic за $10.5)
   - name: game-memory-db
     databaseName: game_memory_db
     user: game_memory_user
