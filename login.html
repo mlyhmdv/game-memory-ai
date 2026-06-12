@@ -183,15 +183,16 @@
 <p class="font-body-md text-body-md text-on-surface-variant">Welcome back to your personal gaming archive.</p>
 </div>
 <!-- Login Form -->
-<form class="space-y-6" onsubmit="event.preventDefault();">
+<form class="space-y-6" id="login-form">
 <div class="space-y-1.5">
 <label class="font-label-md text-label-md text-on-surface-variant ml-1" for="email">Email Address</label>
-<input class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary/50 transition-all font-body-md" id="email" placeholder="commander@normandy.com" type="email">
+<input class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary/50 transition-all font-body-md" id="email" placeholder="commander@normandy.com" type="email" required>
 </div>
 <div class="space-y-1.5">
 <label class="font-label-md text-label-md text-on-surface-variant ml-1" for="password">Password</label>
-<input class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary/50 transition-all font-body-md" id="password" placeholder="••••••••••••" type="password">
+<input class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary/50 transition-all font-body-md" id="password" placeholder="••••••••••••" type="password" required>
 </div>
+<p class="text-red-400 text-sm hidden" id="login-error"></p>
 <div class="flex items-center justify-between font-label-md text-label-md">
 <label class="flex items-center gap-2 cursor-pointer group">
 <input class="w-4 h-4 rounded border-white/20 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 transition-colors" type="checkbox">
@@ -199,7 +200,7 @@
 </label>
 <a class="text-primary hover:text-primary-fixed-dim transition-colors" href="#">Forgot password?</a>
 </div>
-<button class="w-full bg-primary-container hover:bg-primary-container/90 text-on-primary-container font-headline-md text-headline-md py-4 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-primary/20">
+<button type="submit" class="w-full bg-primary-container hover:bg-primary-container/90 text-on-primary-container font-headline-md text-headline-md py-4 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-primary/20" id="login-btn">
                             Continue Journey
                         </button>
 </form>
@@ -223,7 +224,7 @@
 </div>
 <!-- Footer Link -->
 <p class="text-center mt-10 font-label-md text-label-md text-on-surface-variant">
-                        Don't have an account? <a class="text-primary font-bold hover:underline underline-offset-4" href="#">Create one</a>
+                        Don't have an account? <a class="text-primary font-bold hover:underline underline-offset-4" href="register.html">Create one</a>
 </p>
 </div>
 </div>
@@ -231,18 +232,30 @@
 </main>
 <!-- Optional Atmospheric Noise -->
 <div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[100]" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBNvJEJ46w6GJZuZ8BZe-pKbuXp4JEouH0Razbw89qB2nUivCewXvxopCsXZA-sPjkYEzLzUJhsj44ncXFN-n5_I9H6lUrjK0Uhci9mpw7uNy9ZNqMe_fK6ouOSVn6g3Kwys77wJQCyK62oxRfk26Z-HJhVfaGgS4lYc8l4mbrxx1IdeNbjwxgNDrvF7xEVcoeMGwNcTmDuDl00h0b5lbzIcAcgg7Cb0nbHZbqNLejJE8iYanq9MWCu16-SJE6xGvP5cQ0-c1NZdKg');"></div>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
 <script>
-        // Simple micro-interaction for button feedback
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('mousedown', () => {
-                btn.style.transform = 'scale(0.98)';
-            });
-            btn.addEventListener('mouseup', () => {
-                btn.style.transform = 'scale(1)';
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'scale(1)';
-            });
+        if (API.getToken()) window.location.href = 'dashboard.html';
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const err = document.getElementById('login-error');
+            const btn = document.getElementById('login-btn');
+            err.classList.add('hidden');
+            btn.disabled = true;
+            try {
+                const data = await API.login({
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
+                });
+                API.setToken(data.access_token);
+                API.setUser(data.user);
+                window.location.href = 'dashboard.html';
+            } catch (ex) {
+                err.textContent = ex.message || 'Login failed';
+                err.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+            }
         });
     </script>
 </body>

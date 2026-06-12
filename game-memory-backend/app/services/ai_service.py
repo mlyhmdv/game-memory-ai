@@ -106,11 +106,19 @@ async def analyze_screenshot_and_note(
     user_note: Optional[str],
     game_name: str,
 ) -> dict:
-    """
-    Core AI function: analyze screenshot + note, return structured memory dict.
-    Returns a dict with keys: title, summary, important_characters,
-    current_objective, side_quests, key_decisions, location
-    """
+    if not settings.ANTHROPIC_API_KEY:
+        note = user_note or "Gaming session recorded."
+        return {
+            "title": note[:60] if len(note) > 60 else note,
+            "summary": f"You played {game_name}. {note}",
+            "important_characters": [],
+            "current_objective": "Continue your adventure.",
+            "side_quests": [],
+            "key_decisions": [],
+            "location": None,
+            "ai_raw_response": None,
+        }
+
     user_content = []
 
     # Add screenshot if provided

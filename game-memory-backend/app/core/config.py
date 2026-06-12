@@ -1,11 +1,11 @@
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
 from typing import List
 import json
 
 
 class Settings(BaseSettings):
-    # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/game_memory_db"
+    DATABASE_URL: str = "sqlite+aiosqlite:///./game_memory.db"
 
     # Security
     SECRET_KEY: str = "change-this-secret-key-in-production"
@@ -19,7 +19,23 @@ class Settings(BaseSettings):
     APP_NAME: str = "Game Memory AI"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = True
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5500", "http://127.0.0.1:5500"]
+    CORS_ORIGINS: List[str] = [
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://localhost:3000",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+    ]
+
+    @field_validator("CORS_ORIGINS", mode="before")
+    @classmethod
+    def parse_cors(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except json.JSONDecodeError:
+                return [origin.strip() for origin in v.split(",") if origin.strip()]
+        return v
 
     # File Upload
     UPLOAD_DIR: str = "uploads"

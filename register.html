@@ -164,32 +164,33 @@
 <p class="text-sm text-on-surface-variant mt-2 font-medium">Begin your journey into the archives.</p>
 </div>
 <!-- Form -->
-<form class="space-y-5" onsubmit="event.preventDefault();">
+<form class="space-y-5" id="register-form">
 <div class="space-y-1.5">
 <label class="text-[12px] uppercase tracking-widest font-bold text-on-surface-variant ml-1">Full Name</label>
-<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" placeholder="Commander Shepard" type="text"/>
+<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" id="full_name" placeholder="Commander Shepard" type="text" required/>
 </div>
 <div class="space-y-1.5">
 <label class="text-[12px] uppercase tracking-widest font-bold text-on-surface-variant ml-1">Email Address</label>
-<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" placeholder="spectre@citadel.com" type="email"/>
+<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" id="email" placeholder="spectre@citadel.com" type="email" required/>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 <div class="space-y-1.5">
 <label class="text-[12px] uppercase tracking-widest font-bold text-on-surface-variant ml-1">Password</label>
-<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" placeholder="••••••••" type="password"/>
+<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" id="password" placeholder="••••••••" type="password" required minlength="6"/>
 </div>
 <div class="space-y-1.5">
 <label class="text-[12px] uppercase tracking-widest font-bold text-on-surface-variant ml-1">Confirm</label>
-<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" placeholder="••••••••" type="password"/>
+<input class="w-full h-12 px-4 rounded-xl glass-input text-on-surface placeholder:text-outline-variant/50 focus:ring-0" id="password_confirm" placeholder="••••••••" type="password" required/>
 </div>
 </div>
+<p class="text-red-400 text-sm hidden" id="register-error"></p>
 <div class="flex items-start gap-3 py-2">
 <input class="mt-1 rounded border-outline-variant bg-transparent text-primary-container focus:ring-primary-container focus:ring-offset-background h-4 w-4" id="terms" type="checkbox"/>
 <label class="text-xs text-on-surface-variant leading-relaxed cursor-pointer select-none" for="terms">
                             I agree to the <a class="text-primary hover:underline transition-all" href="#">Terms of Service</a> and <a class="text-primary hover:underline transition-all" href="#">Privacy Policy</a>
 </label>
 </div>
-<button class="w-full h-12 bg-primary-container hover:bg-primary-container/90 active:scale-[0.98] transition-all text-on-primary-container font-bold rounded-xl shadow-lg shadow-primary-container/20">
+<button type="submit" class="w-full h-12 bg-primary-container hover:bg-primary-container/90 active:scale-[0.98] transition-all text-on-primary-container font-bold rounded-xl shadow-lg shadow-primary-container/20" id="register-btn">
                         Begin My Journey
                     </button>
 </form>
@@ -218,7 +219,7 @@
 <div class="mt-10 text-center">
 <p class="text-sm text-on-surface-variant">
                         Already have an account? 
-                        <a class="text-primary font-bold hover:underline ml-1" href="#">Sign in</a>
+                        <a class="text-primary font-bold hover:underline ml-1" href="login.html">Sign in</a>
 </p>
 </div>
 </div>
@@ -231,11 +232,38 @@
 </div>
 </section>
 <!-- Custom Micro-interaction Script -->
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
 <script>
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('focus', () => {
-                // Potential for adding dynamic glow or sound effects if needed
-            });
+        if (API.getToken()) window.location.href = 'dashboard.html';
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const err = document.getElementById('register-error');
+            const pwd = document.getElementById('password').value;
+            const confirm = document.getElementById('password_confirm').value;
+            if (pwd !== confirm) {
+                err.textContent = 'Passwords do not match';
+                err.classList.remove('hidden');
+                return;
+            }
+            err.classList.add('hidden');
+            const btn = document.getElementById('register-btn');
+            btn.disabled = true;
+            try {
+                const data = await API.register({
+                    full_name: document.getElementById('full_name').value,
+                    email: document.getElementById('email').value,
+                    password: pwd,
+                });
+                API.setToken(data.access_token);
+                API.setUser(data.user);
+                window.location.href = 'dashboard.html';
+            } catch (ex) {
+                err.textContent = ex.message || 'Registration failed';
+                err.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+            }
         });
     </script>
 </body></html>
